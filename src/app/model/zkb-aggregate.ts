@@ -1,10 +1,12 @@
 export interface ZKBAggregate {
-  date: number;
   corporation: string;
   kills: number;
   isk: number;
-  active: string;
-  numactive: number;
   netisk: number;
-  sumonkills: number;
+  numactive: number;
+  avgperkill: number;
+  iskperactive: number;
+  netiskperactive: number;
+  iskperavgonkill: number;
+  netiskperavgonkill: number;
 }

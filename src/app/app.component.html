@@ -1,11 +1,11 @@
 <div class="header">
   <h2>WormBoard</h2>  v0.1beta
   <div class="year">2017</div>
-  <div id="all" class="month">ALL</div>
-  <div id="jan" class="month">Jan</div>
-  <div id="feb" class="month">Feb</div>
-  <div id="mar" class="month">Mar</div>
-  <div id="apr" class="month">Apr</div>
+  <div id="all" class="month" (click)="onSelect('ALL')" [ngClass]="{'active' : 'ALL' === selected}">ALL</div>
+  <div id="jan" class="month" (click)="onSelect('Jan')" [ngClass]="{'active' : 'Jan' === selected}">Jan</div>
+  <div id="feb" class="month" (click)="onSelect('Feb')" [ngClass]="{'active' : 'Feb' === selected}">Feb</div>
+  <div id="mar" class="month" (click)="onSelect('Mar')" [ngClass]="{'active' : 'Mar' === selected}">Mar</div>
+  <div id="apr" class="month" (click)="onSelect('Apr')" [ngClass]="{'active' : 'Apr' === selected}">Apr</div>
   <div id="may" class="month">May</div>
   <div id="jun" class="month">Jun</div>
   <div id="jul" class="month">Jul</div>

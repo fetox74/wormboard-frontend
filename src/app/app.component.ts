@@ -15,7 +15,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.aggregateService.getStatsForMonth('201701').first().subscribe(e => {
+    /*this.aggregateService.getStatsForMonth('201701').first().subscribe(e => {
+      this.aggregates = e;
+    });*/
+    this.aggregateService.getStatsForYear('2017').first().subscribe(e => {
       this.aggregates = e;
     });
   }

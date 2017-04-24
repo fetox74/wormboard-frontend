@@ -7,11 +7,18 @@ import {ZKBAggregate} from './model/zkb-aggregate';
 export class AggregateService {
   private baseURL = 'http://localhost:8080/';
   private queryMonth = 'getStatsForMonth?month=';
+  private queryYear = 'getStatsForYear?year=';
 
   constructor(private http: Http) {}
 
   getStatsForMonth(month: string): Observable<ZKBAggregate[]> {
     return this.http.get(this.baseURL + this.queryMonth + month)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getStatsForYear(year: string): Observable<ZKBAggregate[]> {
+    return this.http.get(this.baseURL + this.queryYear + year)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

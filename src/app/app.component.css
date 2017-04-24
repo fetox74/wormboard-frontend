@@ -1,3 +1,82 @@
+.header {
+  font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
+  background-color: #59878c;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin: 0px;
+  padding: 10px;
+  color: white;
+  display: inline-flex;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.year {
+  padding: 5px 10px;
+  top: 10px;
+  position: relative;
+  background-color: #4f777b;
+  margin-left: 20px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.month {
+  padding: 5px 0px;
+  top: 10px;
+  position: relative;
+  background-color: #4f777b;
+  display: inline-block;
+  width: 38px;
+  text-align: center;
+}
+
+.year:hover, .month:hover, #all:hover, #dec:hover {
+  background-color: #70abb1;
+}
+
+#all {
+  margin-left: 20px;
+  padding-left: 5px;
+  border-top-left-radius: 10px;
+  background-color: #64999e;
+}
+
+#dec {
+  border-top-right-radius: 10px;
+  padding-right: 5px;
+}
+
+#may, #jun, #jul, #aug, #sep, #oct, #nov, #dec {
+  color: #64999e;
+}
+
+.serverinfo {
+  font-size: smaller;
+  margin-left: auto;
+  margin-top: auto;
+  display: inline-block;
+  position: relative;
+  top: 10px;
+}
+
+h2 {
+  margin: 0px;
+}
+
 .table-wrapper {
   height: 100%;
+}
+
+.footer {
+  font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
+  background-color: #59878c;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin: 0px;
+  padding: 10px;
+  color: white;
+  text-align: end;
+  width: 100%;
+  box-sizing: border-box;
 }

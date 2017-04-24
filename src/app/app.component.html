@@ -1,7 +1,26 @@
+<div class="header">
+  <h2>WormBoard</h2>  v0.1beta
+  <div class="year">2017</div>
+  <div id="all" class="month">ALL</div>
+  <div id="jan" class="month">Jan</div>
+  <div id="feb" class="month">Feb</div>
+  <div id="mar" class="month">Mar</div>
+  <div id="apr" class="month">Apr</div>
+  <div id="may" class="month">May</div>
+  <div id="jun" class="month">Jun</div>
+  <div id="jul" class="month">Jul</div>
+  <div id="aug" class="month">Aug</div>
+  <div id="sep" class="month">Sep</div>
+  <div id="oct" class="month">Oct</div>
+  <div id="nov" class="month">Nov</div>
+  <div id="dec" class="month">Dec</div>
+  <div class="serverinfo">killmails processed until 2017-04-21, 0 days missing, &oslash;db: 182.2 ms, &oslash;agg: 35.35 ms</div>
+</div>
+
 <!--<div class="table-wrapper">-->
   <p-dataTable [value]="aggregates" resizableColumns="true" [rows]="100" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,25,50,100]"
-               scrollable="true" scrollHeight="855px">
-    <p-header>WormBoard - Jan 2017</p-header>
+               scrollable="true" scrollHeight="800px">
+    <!--<p-header>WormBoard - Jan 2017</p-header>-->
 
     <p-column header="Rank" [style]="{'width':'64px'}">
       <template let-col let-ri="rowIndex" pTemplate="body">
@@ -58,4 +77,8 @@
     </p-column>
   </p-dataTable>
 <!--</div>-->
+
+<div class="footer">
+  Legal / Disclaimer
+</div>
 

@@ -5,7 +5,7 @@ import {ZKBAggregate} from './model/zkb-aggregate';
 
 @Injectable()
 export class AggregateService {
-  private baseURL = 'http://localhost:8080/';
+  private baseURL = 'http://fetox-developments.com:8080/WormBoardREST/';
   private queryMonth = 'getStatsForMonth?month=';
   private queryYear = 'getStatsForYear?year=';
 

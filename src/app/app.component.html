@@ -1,6 +1,11 @@
 <div class="header">
-  <h2>WormBoard</h2>  v0.1beta
-  <div class="year">2017</div>
+  <h2>WormBoard</h2>v0.1beta
+  <div class="year" (click)="onYearMenu($event)">
+    {{selectedYear}}
+    <div class="yearmenu" [@menuTrigger]="menuState">
+      <div class="yearmenuitem" *ngFor="let year of years" (click)="onSelectYear([year])">{{year}}</div>
+    </div>
+  </div>
   <div id="all" class="month" (click)="onSelect('ALL')" [ngClass]="{'selected' : 'ALL' === selectedMonth}">ALL</div>
   <div id="jan" class="month" (click)="onSelect('Jan')" [ngClass]="{'selected' : 'Jan' === selectedMonth, 'inactive' : !isMonthAvailable('Jan')}">Jan</div>
   <div id="feb" class="month" (click)="onSelect('Feb')" [ngClass]="{'selected' : 'Feb' === selectedMonth, 'inactive' : !isMonthAvailable('Feb')}">Feb</div>

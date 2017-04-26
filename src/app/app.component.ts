@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {animate, Component, OnInit, state, style, transition, trigger} from '@angular/core';
 import {AggregateService} from './aggregate.service';
 import {ZKBAggregate} from './model/zkb-aggregate';
 
@@ -6,7 +6,19 @@ import {ZKBAggregate} from './model/zkb-aggregate';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [AggregateService]
+  providers: [AggregateService],
+  animations: [
+    trigger('menuTrigger', [
+      state('invisible', style({
+        margin: '-35px 0px 0px -10px'
+      })),
+      state('visible',   style({
+        margin: '5px 0px 0px -10px'
+      })),
+      transition('invisible => visible', animate('100ms ease-in')),
+      transition('visible => invisible', animate('100ms ease-out'))
+    ])
+  ]
 })
 export class AppComponent implements OnInit {
   public aggregates: ZKBAggregate[];
@@ -15,6 +27,7 @@ export class AppComponent implements OnInit {
   public years: string[];
   public month: string[];
   public status = 'loading server status...';
+  public menuState = 'invisible';
   private monthNum = {
     'Jan': '01',
     'Feb': '02',
@@ -54,6 +67,11 @@ export class AppComponent implements OnInit {
         case 'ALL':
           this.aggregateService.getStatsForYear(this.selectedYear).first().subscribe(e => {
             this.aggregates = e;
+
+            this.aggregateService.getServerStatus().first().subscribe(e => {
+              this.status = e.statusMessage;
+              this.month = e.allMonth;
+            });
           });
           break;
         case 'Jan':
@@ -70,16 +88,40 @@ export class AppComponent implements OnInit {
         case 'Dec':
           this.aggregateService.getStatsForMonth(this.selectedYear + this.monthNum[month]).first().subscribe(e => {
             this.aggregates = e;
+
+            this.aggregateService.getServerStatus().first().subscribe(e => {
+              this.status = e.statusMessage;
+              this.month = e.allMonth;
+            });
           });
           break;
         default:
           break;
       }
-      this.aggregateService.getServerStatus().first().subscribe(e => {
-        this.status = e.statusMessage;
-        this.month = e.allMonth;
+    }
+  }
+
+  onYearMenu(event: Event): void {
+    event.stopPropagation();
+    this.menuState = this.menuState === 'visible' ? 'invisible' : 'visible';
+  }
+
+  onSelectYear(year: string) {
+    if (this.selectedYear !== year) {
+      this.selectedYear = year;
+      this.selectedMonth = 'ALL';
+
+      this.aggregateService.getStatsForYear(this.selectedYear).first().subscribe(e => {
+        this.aggregates = e;
+
+        this.aggregateService.getServerStatus().first().subscribe(e => {
+          this.status = e.statusMessage;
+          this.month = e.allMonth;
+        });
       });
     }
+
+    this.menuState = 'invisible';
   }
 
   getAllYearsFromMonth(allMonth: string[]): string[] {

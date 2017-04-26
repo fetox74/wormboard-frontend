@@ -33,6 +33,7 @@
 
 .year:hover, .month:hover, #all:hover, #dec:hover {
   background-color: #70abb1;
+  cursor: pointer;
 }
 
 .active {

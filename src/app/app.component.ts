@@ -10,90 +10,93 @@ import {ZKBAggregate} from './model/zkb-aggregate';
 })
 export class AppComponent implements OnInit {
   public aggregates: ZKBAggregate[];
-  public selected: string;
+  public selectedMonth: string;
+  public selectedYear: string;
+  public years: string[];
+  public month: string[];
+  public status = 'loading server status...';
+  private monthNum = {
+    'Jan': '01',
+    'Feb': '02',
+    'Mar': '03',
+    'Apr': '04',
+    'May': '05',
+    'Jun': '06',
+    'Jul': '07',
+    'Aug': '08',
+    'Sep': '09',
+    'Oct': '10',
+    'Nov': '11',
+    'Dec': '12'
+  };
 
   constructor(private aggregateService: AggregateService) {
   }
 
   ngOnInit() {
-    this.selected = 'ALL';
-    this.aggregateService.getStatsForYear('2017').first().subscribe(e => {
-      this.aggregates = e;
+    this.aggregateService.getServerStatus().first().subscribe(e => {
+      this.status = e.statusMessage;
+      this.month = e.allMonth;
+      this.years = this.getAllYearsFromMonth(e.allMonth);
+
+      this.selectedMonth = 'ALL';
+      this.selectedYear = this.years[0];
+      this.aggregateService.getStatsForYear(this.selectedYear).first().subscribe(e => {
+        this.aggregates = e;
+      });
     });
   }
 
   onSelect(month: string) {
-    if (month !== this.selected) {
-      this.selected = month;
+    if (month !== this.selectedMonth && (month === 'ALL' || this.month.some(e => e === this.selectedYear + this.monthNum[month]))) {
+      this.selectedMonth = month;
       switch (month) {
         case 'ALL':
-          this.aggregateService.getStatsForYear('2017').first().subscribe(e => {
+          this.aggregateService.getStatsForYear(this.selectedYear).first().subscribe(e => {
             this.aggregates = e;
           });
           break;
         case 'Jan':
-          this.aggregateService.getStatsForMonth('201701').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'Feb':
-          this.aggregateService.getStatsForMonth('201702').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'Mar':
-          this.aggregateService.getStatsForMonth('201703').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'Apr':
-          this.aggregateService.getStatsForMonth('201704').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'May':
-          this.aggregateService.getStatsForMonth('201705').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'Jun':
-          this.aggregateService.getStatsForMonth('201706').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'Jul':
-          this.aggregateService.getStatsForMonth('201707').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'Aug':
-          this.aggregateService.getStatsForMonth('201708').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'Sep':
-          this.aggregateService.getStatsForMonth('201709').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'Oct':
-          this.aggregateService.getStatsForMonth('201710').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'Nov':
-          this.aggregateService.getStatsForMonth('201711').first().subscribe(e => {
-            this.aggregates = e;
-          });
-          break;
         case 'Dec':
-          this.aggregateService.getStatsForMonth('201712').first().subscribe(e => {
+          this.aggregateService.getStatsForMonth(this.selectedYear + this.monthNum[month]).first().subscribe(e => {
             this.aggregates = e;
           });
           break;
         default:
           break;
       }
+      this.aggregateService.getServerStatus().first().subscribe(e => {
+        this.status = e.statusMessage;
+        this.month = e.allMonth;
+      });
+    }
+  }
+
+  getAllYearsFromMonth(allMonth: string[]): string[] {
+    const allYears = new Set<string>();
+
+    for (const month of allMonth) {
+      allYears.add(month.substr(0, 4));
+    }
+
+    return Array.from(allYears).sort().reverse();
+  }
+
+  isMonthAvailable(month): boolean {
+    if (this.month) {
+      return this.month.some(e => e === this.selectedYear + this.monthNum[month]);
+    } else {
+      return false;
     }
   }
 }

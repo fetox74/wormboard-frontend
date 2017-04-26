@@ -36,8 +36,12 @@
   cursor: pointer;
 }
 
-.active {
+.selected {
   background-color: #64999e;
+}
+
+.inactive {
+  color: #64999e;
 }
 
 #all {
@@ -49,10 +53,6 @@
 #dec {
   border-top-right-radius: 10px;
   padding-right: 5px;
-}
-
-#may, #jun, #jul, #aug, #sep, #oct, #nov, #dec {
-  color: #64999e;
 }
 
 .serverinfo {

@@ -1,20 +1,20 @@
 <div class="header">
   <h2>WormBoard</h2>  v0.1beta
   <div class="year">2017</div>
-  <div id="all" class="month" (click)="onSelect('ALL')" [ngClass]="{'active' : 'ALL' === selected}">ALL</div>
-  <div id="jan" class="month" (click)="onSelect('Jan')" [ngClass]="{'active' : 'Jan' === selected}">Jan</div>
-  <div id="feb" class="month" (click)="onSelect('Feb')" [ngClass]="{'active' : 'Feb' === selected}">Feb</div>
-  <div id="mar" class="month" (click)="onSelect('Mar')" [ngClass]="{'active' : 'Mar' === selected}">Mar</div>
-  <div id="apr" class="month" (click)="onSelect('Apr')" [ngClass]="{'active' : 'Apr' === selected}">Apr</div>
-  <div id="may" class="month">May</div>
-  <div id="jun" class="month">Jun</div>
-  <div id="jul" class="month">Jul</div>
-  <div id="aug" class="month">Aug</div>
-  <div id="sep" class="month">Sep</div>
-  <div id="oct" class="month">Oct</div>
-  <div id="nov" class="month">Nov</div>
-  <div id="dec" class="month">Dec</div>
-  <div class="serverinfo">killmails processed until 2017-04-21, 0 days missing, &oslash;db: 182.2 ms, &oslash;agg: 35.35 ms</div>
+  <div id="all" class="month" (click)="onSelect('ALL')" [ngClass]="{'selected' : 'ALL' === selectedMonth}">ALL</div>
+  <div id="jan" class="month" (click)="onSelect('Jan')" [ngClass]="{'selected' : 'Jan' === selectedMonth, 'inactive' : !isMonthAvailable('Jan')}">Jan</div>
+  <div id="feb" class="month" (click)="onSelect('Feb')" [ngClass]="{'selected' : 'Feb' === selectedMonth, 'inactive' : !isMonthAvailable('Feb')}">Feb</div>
+  <div id="mar" class="month" (click)="onSelect('Mar')" [ngClass]="{'selected' : 'Mar' === selectedMonth, 'inactive' : !isMonthAvailable('Mar')}">Mar</div>
+  <div id="apr" class="month" (click)="onSelect('Apr')" [ngClass]="{'selected' : 'Apr' === selectedMonth, 'inactive' : !isMonthAvailable('Apr')}">Apr</div>
+  <div id="may" class="month" (click)="onSelect('May')" [ngClass]="{'selected' : 'May' === selectedMonth, 'inactive' : !isMonthAvailable('May')}">May</div>
+  <div id="jun" class="month" (click)="onSelect('Jun')" [ngClass]="{'selected' : 'Jun' === selectedMonth, 'inactive' : !isMonthAvailable('Jun')}">Jun</div>
+  <div id="jul" class="month" (click)="onSelect('Jul')" [ngClass]="{'selected' : 'Jul' === selectedMonth, 'inactive' : !isMonthAvailable('Jul')}">Jul</div>
+  <div id="aug" class="month" (click)="onSelect('Aug')" [ngClass]="{'selected' : 'Aug' === selectedMonth, 'inactive' : !isMonthAvailable('Aug')}">Aug</div>
+  <div id="sep" class="month" (click)="onSelect('Sep')" [ngClass]="{'selected' : 'Sep' === selectedMonth, 'inactive' : !isMonthAvailable('Sep')}">Sep</div>
+  <div id="oct" class="month" (click)="onSelect('Oct')" [ngClass]="{'selected' : 'Oct' === selectedMonth, 'inactive' : !isMonthAvailable('Oct')}">Oct</div>
+  <div id="nov" class="month" (click)="onSelect('Nov')" [ngClass]="{'selected' : 'Nov' === selectedMonth, 'inactive' : !isMonthAvailable('Nov')}">Nov</div>
+  <div id="dec" class="month" (click)="onSelect('Dec')" [ngClass]="{'selected' : 'Dec' === selectedMonth, 'inactive' : !isMonthAvailable('Dec')}">Dec</div>
+  <div class="serverinfo">{{status}}</div>
 </div>
 
 <!--<div class="table-wrapper">-->

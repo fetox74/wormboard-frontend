@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
     this.menuState = this.menuState === 'visible' ? 'invisible' : 'visible';
   }
 
-  onSelectYear(year: string) {
+  onSelectYear(event: Event, year: string) {
     if (this.selectedYear !== year) {
       this.selectedYear = year;
       this.selectedMonth = 'ALL';
@@ -121,6 +121,7 @@ export class AppComponent implements OnInit {
       });
     }
 
+    event.stopPropagation();
     this.menuState = 'invisible';
   }
 

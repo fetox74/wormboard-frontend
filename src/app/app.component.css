@@ -1,3 +1,8 @@
+.header-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
 .header {
   font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
   background-color: #59878c;
@@ -10,7 +15,6 @@
   width: 100%;
   box-sizing: border-box;
   position: relative;
-  z-index: 1;
 }
 
 .year {

@@ -83,6 +83,15 @@
 </p-dataTable>
 
 <div class="footer">
-  Legal / Disclaimer
+  <span id="about" (click)="displayAbout=true">About</span> / Legal / Disclaimer
 </div>
+
+<p-dialog header="About WormBoard" [(visible)]="displayAbout" modal="modal" width="640" responsive="true">
+  <p>WormBoard is a Eve Online wormhole comparison list motivated by the work of Noobman (CEO of Hard Knocks) and ExookiZ (CEO of Scary Wormhole People).</p>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa-check" (click)="displayAbout=false" label="OK"></button>
+    </div>
+  </p-footer>
+</p-dialog>
 

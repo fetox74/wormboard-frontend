@@ -21,6 +21,7 @@ import {ZKBAggregate} from './model/zkb-aggregate';
   ]
 })
 export class AppComponent implements OnInit {
+  public displayAbout = false;
   public aggregates: ZKBAggregate[];
   public selectedMonth: string;
   public selectedYear: string;

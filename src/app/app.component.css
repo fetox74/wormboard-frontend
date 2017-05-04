@@ -105,3 +105,8 @@ h2 {
   width: 100%;
   box-sizing: border-box;
 }
+
+#about:hover {
+  color: #70abb1;
+  cursor: pointer;
+}

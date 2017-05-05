@@ -106,7 +106,7 @@ h2 {
   box-sizing: border-box;
 }
 
-#about:hover {
+#about:hover, #legal:hover {
   color: #70abb1;
   cursor: pointer;
 }

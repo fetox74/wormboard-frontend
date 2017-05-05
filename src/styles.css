@@ -2,6 +2,10 @@ html, body {
   /*height: 100%;*/
 }
 
+th {
+  text-align: center !important;
+}
+
 .ui-datatable-resizable {
   padding-bottom: 0px !important;
 }

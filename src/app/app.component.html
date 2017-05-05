@@ -88,13 +88,13 @@
 
 <p-dialog header="About WormBoard" [(visible)]="displayAbout" modal="modal" width="640" responsive="true">
   <h3>Why</h3>
-  <p>WormBoard is an Eve Online wormhole comparison list heavily inspired by the work of Noobman (CEO of Hard Knocks) and ExookiZ (CEO of Scary Wormhole People).
-    The main motivation is making smaller wormhole groups more comparable to larger ones, thus ignoring alliances and shared killmails.</p>
+  <p>WormBoard is an Eve Online wormhole corporation comparison list heavily inspired by the work of Noobman (CEO of Hard Knocks) and ExookiZ (CEO of Scary Wormhole People).
+    The main motivation is to make smaller wormhole groups more easily comparable to larger ones, thus ignoring alliances and shared killmails.</p>
   <br>
   <h3>How</h3>
-  <p>It fetches all kills a day from zKillboard.com and filters the ones happening in w-space, then adding them to daily aggregates based on the final hit corporation. So kills
-    are only counted for the final hit corp and only the attackers of that corp are taken into account. It does not remove infrastructure kills, cuz it wants to address corporations
-    that have specialized in that field, as well as your lucky offline POS finds. It does however ignore kills BY ONLY infrastructure, so your lame POS trap doesn't count.</p>
+  <p>It fetches all kills daily from zKillboard.com and filters the ones happening in w-space, then adding them to daily aggregates based on the final hit corporation. So kills
+    are only counted for the final hit corp and only the attackers of that corp are taken into account. It does not remove infrastructure kills, because it corporations
+    that have specialized in that field need to be accommodated too, as well as your lucky offline POS finds. It does, however, ignore kills BY infrastructure ONLY, so your lame POS trap doesn't count.</p>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
       <button type="button" pButton icon="fa-check" (click)="displayAbout=false" label="OK"></button>

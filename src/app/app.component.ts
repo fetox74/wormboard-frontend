@@ -1,4 +1,4 @@
-import {animate, Component, OnInit, state, style, transition, trigger} from '@angular/core';
+import {animate, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, state, style, transition, trigger} from '@angular/core';
 import {AggregateService} from './aggregate.service';
 import {ZKBAggregate} from './model/zkb-aggregate';
 
@@ -18,7 +18,8 @@ import {ZKBAggregate} from './model/zkb-aggregate';
       transition('invisible => visible', animate('100ms ease-in')),
       transition('visible => invisible', animate('100ms ease-out'))
     ])
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
   public displayAbout = false;
@@ -45,7 +46,8 @@ export class AppComponent implements OnInit {
     'Dec': '12'
   };
 
-  constructor(private aggregateService: AggregateService) {
+  constructor(private aggregateService: AggregateService,
+              private changeDetectorRef: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -58,6 +60,7 @@ export class AppComponent implements OnInit {
       this.selectedYear = this.years[0];
       this.aggregateService.getStatsForYear(this.selectedYear).first().subscribe(e => {
         this.aggregates = e;
+        this.changeDetectorRef.markForCheck();
       });
     });
   }
@@ -73,6 +76,7 @@ export class AppComponent implements OnInit {
             this.aggregateService.getServerStatus().first().subscribe(e => {
               this.status = e.statusMessage;
               this.month = e.allMonth;
+              this.changeDetectorRef.markForCheck();
             });
           });
           break;
@@ -94,6 +98,7 @@ export class AppComponent implements OnInit {
             this.aggregateService.getServerStatus().first().subscribe(e => {
               this.status = e.statusMessage;
               this.month = e.allMonth;
+              this.changeDetectorRef.markForCheck();
             });
           });
           break;
@@ -119,6 +124,7 @@ export class AppComponent implements OnInit {
         this.aggregateService.getServerStatus().first().subscribe(e => {
           this.status = e.statusMessage;
           this.month = e.allMonth;
+          this.changeDetectorRef.markForCheck();
         });
       });
     }

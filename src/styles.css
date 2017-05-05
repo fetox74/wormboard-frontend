@@ -6,6 +6,10 @@ th {
   text-align: center !important;
 }
 
+tr:hover {
+  background: rgba(31, 137, 206, 0.21) !important;
+}
+
 .ui-datatable-resizable {
   padding-bottom: 0px !important;
 }

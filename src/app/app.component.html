@@ -45,7 +45,8 @@
 
   <p-column field="netisk" header="NetIsk" [sortable]="true" [style]="{'text-align':'right'}">
     <template let-col let-aggregate="rowData" pTemplate="body">
-      <span>{{aggregate[col.field] | number:'1.2-2'}}</span>
+      <span *ngIf="aggregate[col.field] >= 0">{{aggregate[col.field] | number:'1.2-2'}}</span>
+      <span class="negative-number" *ngIf="aggregate[col.field] < 0">{{aggregate[col.field] | number:'1.2-2'}}</span>
     </template>
   </p-column>
 
@@ -65,7 +66,8 @@
 
   <p-column field="netiskperactive" header="NetIskPerActive" [sortable]="true" [style]="{'text-align':'right'}">
     <template let-col let-aggregate="rowData" pTemplate="body">
-      <span>{{aggregate[col.field] | number:'1.2-2'}}</span>
+      <span *ngIf="aggregate[col.field] >= 0">{{aggregate[col.field] | number:'1.2-2'}}</span>
+      <span class="negative-number" *ngIf="aggregate[col.field] < 0">{{aggregate[col.field] | number:'1.2-2'}}</span>
     </template>
   </p-column>
 
@@ -77,7 +79,8 @@
 
   <p-column field="netiskperavgonkill" header="NetIskPerAvgOnKill" [sortable]="true" [style]="{'text-align':'right'}">
     <template let-col let-aggregate="rowData" pTemplate="body">
-      <span>{{aggregate[col.field] | number:'1.2-2'}}</span>
+      <span *ngIf="aggregate[col.field] >= 0">{{aggregate[col.field] | number:'1.2-2'}}</span>
+      <span class="negative-number" *ngIf="aggregate[col.field] < 0">{{aggregate[col.field] | number:'1.2-2'}}</span>
     </template>
   </p-column>
 </p-dataTable>

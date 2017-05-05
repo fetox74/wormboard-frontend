@@ -110,3 +110,7 @@ h2 {
   color: #70abb1;
   cursor: pointer;
 }
+
+.negative-number {
+  color: red;
+}

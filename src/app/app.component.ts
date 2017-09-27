@@ -1,14 +1,15 @@
-import {animate, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, state, style, transition, trigger} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {AggregateService} from './aggregate.service';
 import {ZKBAggregate} from './model/zkb-aggregate';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
   providers: [AggregateService],
   animations: [
-    trigger('menuTrigger', [
+    trigger('menuState', [
       state('invisible', style({
         margin: '-35px 0px 0px -10px'
       })),

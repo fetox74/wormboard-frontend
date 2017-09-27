@@ -89,29 +89,6 @@ h2 {
   margin: 0px;
 }
 
-.table-wrapper {
-  height: calc(100vh - 104px);
-
-  ::ng-deep .ui-datatable-scrollable {
-    display: flex;
-    flex-direction: column;
-  }
-
-  ::ng-deep .ui-datatable-scrollable-wrapper {
-    flex: 1 1 0;
-  }
-
-  ::ng-deep .ui-datatable-scrollable-view {
-    height: calc(100vh - 138px);
-    display: flex;
-    flex-direction: column;
-  }
-
-  ::ng-deep .ui-datatable-scrollable-body {
-    flex: 1 1 0;
-  }
-}
-
 .footer {
   font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
   background-color: #59878c;

@@ -123,6 +123,16 @@ h2 {
   text-align: end;
   width: 100%;
   box-sizing: border-box;
+
+  #isk-switch {
+    float: left;
+  }
+
+  #isk-switch-label {
+    float: left;
+    margin-left: 5px;
+    margin-top: 1px;
+  }
 }
 
 #about:hover, #legal:hover {

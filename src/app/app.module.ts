@@ -4,12 +4,15 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {ButtonModule, DataTableModule, DialogModule, SharedModule} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BootstrapSwitchModule} from 'angular2-bootstrap-switch';
 
-import {AppComponent} from './app.component';
+import {AppComponent} from './component/app.component';
+import { IskPipe } from './pipe/isk.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
+    IskPipe,
   ],
   imports: [
     BrowserModule,
@@ -19,7 +22,8 @@ import {AppComponent} from './app.component';
     SharedModule,
     DialogModule,
     ButtonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    BootstrapSwitchModule.forRoot(),
   ],
   bootstrap: [AppComponent]
 })

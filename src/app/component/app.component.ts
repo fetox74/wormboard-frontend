@@ -112,7 +112,7 @@ export class AppComponent implements OnInit {
         case 'Q2':
         case 'Q3':
         case 'Q4':
-          this.aggregateService.getStatsForQuarter(this.selectedYear + period).first().subscribe(e => {
+          this.aggregateService.getStatsForQuarter(this.selectedYear + this.monthNum[period]).first().subscribe(e => {
             this.aggregates = e;
 
             this.aggregateService.getServerStatus().first().subscribe(e => {

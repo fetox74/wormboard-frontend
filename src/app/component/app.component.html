@@ -1,6 +1,6 @@
 <div class="header-wrapper">
   <div class="header">
-    <h2>WormBoard</h2>v0.2
+    <h2>WormBoard</h2>v1.0
     <div class="year" (click)="onYearMenu($event)">
       {{selectedYear}}
       <div class="yearmenu" [@menuState]="menuState">
@@ -33,11 +33,28 @@
     </ng-template>
   </p-column>
 
-  <p-column field="corporation" header="corporation" [sortable]="true" [style]="{'width':'18%', 'white-space':'nowrap', 'overflow':'hidden'}"></p-column>
+  <p-column field="corporation" header="corporation" [sortable]="true" [style]="{'width':'16%', 'white-space':'nowrap', 'overflow':'hidden'}"></p-column>
 
   <p-column field="kills" header="kills" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}"></p-column>
 
-  <p-column field="isk" header="ISK" [sortable]="true" [style]="{'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
+  <p-column field="losses" header="loss'" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}"></p-column>
+
+  <p-column field="kdratio" header="k / d" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
+    <ng-template let-col let-aggregate="rowData" pTemplate="body">
+      <span *ngIf="aggregate[col.field] != 'Infinity' && aggregate[col.field] >= 1.0">{{aggregate[col.field] | number:'1.2-2'}}</span>
+      <span class="negative-number" *ngIf="aggregate[col.field] != 'Infinity' && aggregate[col.field] < 1.0">{{aggregate[col.field] | number:'1.2-2'}}</span>
+      <span *ngIf="aggregate[col.field] == 'Infinity'">&#x221E;</span>
+    </ng-template>
+  </p-column>
+
+  <p-column field="kdefficiency" header="eff.%" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
+    <ng-template let-col let-aggregate="rowData" pTemplate="body">
+      <span *ngIf="aggregate[col.field] >= 50.0">{{aggregate[col.field] | number:'1.2-2'}}</span>
+      <span class="negative-number" *ngIf="aggregate[col.field] < 50.0">{{aggregate[col.field] | number:'1.2-2'}}</span>
+    </ng-template>
+  </p-column>
+
+  <p-column field="iskwon" header="ISK won" [sortable]="true" [style]="{'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
     <ng-template let-col let-aggregate="rowData" pTemplate="body">
       <span>{{aggregate[col.field] | number:'1.2-2' | isk:condenseIsk}}</span>
     </ng-template>
@@ -50,34 +67,41 @@
     </ng-template>
   </p-column>
 
-  <p-column field="numactive" header="#active" [sortable]="true" [style]="{'width':'6%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}"></p-column>
+  <p-column field="iskefficiency" header="ISK.%" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
+    <ng-template let-col let-aggregate="rowData" pTemplate="body">
+      <span *ngIf="aggregate[col.field] >= 50.0">{{aggregate[col.field] | number:'1.2-2'}}</span>
+      <span class="negative-number" *ngIf="aggregate[col.field] < 50.0">{{aggregate[col.field] | number:'1.2-2'}}</span>
+    </ng-template>
+  </p-column>
 
-  <p-column field="avgperkill" header="&oslash; on kill" [sortable]="true" [style]="{'width':'6%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
+  <p-column field="numactive" header="# act" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}"></p-column>
+
+  <p-column field="avgperkill" header="&oslash; / kill" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
     <ng-template let-col let-aggregate="rowData" pTemplate="body">
       <span>{{aggregate[col.field] | number:'1.2-2' | isk:condenseIsk}}</span>
     </ng-template>
   </p-column>
 
-  <p-column field="iskperactive" header="ISK / active" [sortable]="true" [style]="{'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
+  <p-column field="iskperactive" header="ISK / active" [sortable]="true" [style]="{'width':'8.5%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
     <ng-template let-col let-aggregate="rowData" pTemplate="body">
       <span>{{aggregate[col.field] | number:'1.2-2' | isk:condenseIsk}}</span>
     </ng-template>
   </p-column>
 
-  <p-column field="netiskperactive" header="net ISK / active" [sortable]="true" [style]="{'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
+  <p-column field="netiskperactive" header="net ISK / active" [sortable]="true" [style]="{'width':'8.5%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
     <ng-template let-col let-aggregate="rowData" pTemplate="body">
       <span *ngIf="aggregate[col.field] >= 0">{{aggregate[col.field] | number:'1.2-2' | isk:condenseIsk}}</span>
       <span class="negative-number" *ngIf="aggregate[col.field] < 0">{{aggregate[col.field] | number:'1.2-2' | isk:condenseIsk}}</span>
     </ng-template>
   </p-column>
 
-  <p-column field="iskperavgonkill" header="ISK / &oslash; on kill" [sortable]="true" [style]="{'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
+  <p-column field="iskperavgonkill" header="ISK / &oslash; on kill" [sortable]="true" [style]="{'width':'8.5%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
     <ng-template let-col let-aggregate="rowData" pTemplate="body">
       <span>{{aggregate[col.field] | number:'1.2-2' | isk:condenseIsk}}</span>
     </ng-template>
   </p-column>
 
-  <p-column field="netiskperavgonkill" header="net ISK / &oslash; on kill" [sortable]="true" [style]="{'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
+  <p-column field="netiskperavgonkill" header="net ISK / &oslash; on kill" [sortable]="true" [style]="{'width':'8.5%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
     <ng-template let-col let-aggregate="rowData" pTemplate="body">
       <span *ngIf="aggregate[col.field] >= 0">{{aggregate[col.field] | number:'1.2-2' | isk:condenseIsk}}</span>
       <span class="negative-number" *ngIf="aggregate[col.field] < 0">{{aggregate[col.field] | number:'1.2-2' | isk:condenseIsk}}</span>
@@ -88,7 +112,7 @@
 <div class="footer">
   <switch id="isk-switch" [(status)]="condenseIsk" onText="on" offText="off" size="mini" (statusChange)="onToggleISKPipe($event)"></switch>
   <span id="isk-switch-label">Condense ISK</span>
-  <span id="about" (click)="displayAbout=true">About</span> / <span id="legal" (click)="displayLegal=true">Legal</span> / Disclaimer
+  <span id="about" (click)="displayAbout=true">About</span> / <span id="legal" (click)="displayLegal=true">Legal</span>
 </div>
 
 <p-dialog header="About WormBoard" [(visible)]="displayAbout" modal="modal" width="700" responsive="true">
@@ -127,7 +151,7 @@
     website.</p>
   <br>
   <h3>3rd Party</h3>
-  <p>WormBoard makes heavy use of the zKillboard API, thanks to Squizz Caphinator for making it available!</p>
+  <p>WormBoard makes heavy use of the zKillboard API, thanks to Squizz Caphinator for making it public!</p>
   <h4>Un-ordered list of Software used</h4>
   <ul>
     <li>Angular 2</li>
@@ -140,7 +164,7 @@
   </ul>
   <br>
   <h3>License</h3>
-  <p>WormBoard will be released under the AGPLv3 license once it reaches release state. Full license text will be available in the GitHub repository.</p>
+  <p>WormBoard sources are licensed under the AGPLv3. Full license text is available in the GitHub repository.</p>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
       <button type="button" pButton icon="fa-check" (click)="displayLegal=false" label="OK"></button>

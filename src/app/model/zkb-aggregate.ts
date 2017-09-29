@@ -1,8 +1,13 @@
 export interface ZKBAggregate {
   corporation: string;
   kills: number;
-  isk: number;
+  losses: number;
+  kdratio: number;
+  kdefficiency: number;
+  iskwon: number;
+  isklost: number;
   netisk: number;
+  iskefficiency: number;
   numactive: number;
   avgperkill: number;
   iskperactive: number;

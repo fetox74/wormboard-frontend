@@ -9,7 +9,9 @@ export class AggregateService {
   private baseURL = 'http://fetox-developments.com:8080/WormBoardREST/';
   private queryServer = 'getServerStatus';
   private queryMonth = 'getStatsForMonth?month=';
+  private queryQuarter = 'getStatsForQuarter?quarter=';
   private queryYear = 'getStatsForYear?year=';
+  private queryLast90Days = 'getStatsForLast90Days';
 
   constructor(private http: Http) {}
 
@@ -21,6 +23,18 @@ export class AggregateService {
 
   getStatsForMonth(month: string): Observable<ZKBAggregate[]> {
     return this.http.get(this.baseURL + this.queryMonth + month)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getStatsForQuarter(quarter: string): Observable<ZKBAggregate[]> {
+    return this.http.get(this.baseURL + this.queryQuarter + quarter)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getStatsForLast90Days(): Observable<ZKBAggregate[]> {
+    return this.http.get(this.baseURL + this.queryLast90Days)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

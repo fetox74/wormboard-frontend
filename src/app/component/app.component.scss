@@ -42,7 +42,7 @@
   color: #7d9394;
 }
 
-.month {
+.period {
   padding: 5px 0px;
   top: 10px;
   position: relative;
@@ -52,7 +52,7 @@
   text-align: center;
 }
 
-.year:hover, .month:hover, #all:hover, #dec:hover {
+.year:hover, .period:hover, #all:hover, #dec:hover {
   background-color: #70abb1;
   cursor: pointer;
 }
@@ -71,7 +71,12 @@
   border-top-left-radius: 10px;
 }
 
-#dec {
+#q1, #q2, #q3, #q4 {
+  width: 32px;
+}
+
+#last90 {
+  width: 100px;
   border-top-right-radius: 10px;
   padding-right: 5px;
 }

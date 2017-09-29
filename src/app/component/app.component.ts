@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   public displayAbout = false;
   public displayLegal = false;
   public aggregates: ZKBAggregate[];
-  public selectedMonth: string;
+  public selectedPeriod: string;
   public selectedYear: string;
   public years: string[];
   public month: string[];
@@ -45,7 +45,11 @@ export class AppComponent implements OnInit {
     'Sep': '09',
     'Oct': '10',
     'Nov': '11',
-    'Dec': '12'
+    'Dec': '12',
+    'Q1': '01',
+    'Q2': '04',
+    'Q3': '07',
+    'Q4': '10'
   };
 
   constructor(private aggregateService: AggregateService,
@@ -58,7 +62,7 @@ export class AppComponent implements OnInit {
       this.month = e.allMonth;
       this.years = this.getAllYearsFromMonth(e.allMonth);
 
-      this.selectedMonth = 'ALL';
+      this.selectedPeriod = 'ALL';
       this.selectedYear = this.years[0];
       this.aggregateService.getStatsForYear(this.selectedYear).first().subscribe(e => {
         this.aggregates = e;
@@ -67,10 +71,10 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onSelect(month: string) {
-    if (month !== this.selectedMonth && (month === 'ALL' || this.month.some(e => e === this.selectedYear + this.monthNum[month]))) {
-      this.selectedMonth = month;
-      switch (month) {
+  onSelect(period: string) {
+    if (period !== this.selectedPeriod && (period === 'ALL' || period === 'Last90' || this.month.some(e => e === this.selectedYear + this.monthNum[period]))) {
+      this.selectedPeriod = period;
+      switch (period) {
         case 'ALL':
           this.aggregateService.getStatsForYear(this.selectedYear).first().subscribe(e => {
             this.aggregates = e;
@@ -94,7 +98,32 @@ export class AppComponent implements OnInit {
         case 'Oct':
         case 'Nov':
         case 'Dec':
-          this.aggregateService.getStatsForMonth(this.selectedYear + this.monthNum[month]).first().subscribe(e => {
+          this.aggregateService.getStatsForMonth(this.selectedYear + this.monthNum[period]).first().subscribe(e => {
+            this.aggregates = e;
+
+            this.aggregateService.getServerStatus().first().subscribe(e => {
+              this.status = e.statusMessage;
+              this.month = e.allMonth;
+              this.changeDetectorRef.markForCheck();
+            });
+          });
+          break;
+        case 'Q1':
+        case 'Q2':
+        case 'Q3':
+        case 'Q4':
+          this.aggregateService.getStatsForQuarter(this.selectedYear + period).first().subscribe(e => {
+            this.aggregates = e;
+
+            this.aggregateService.getServerStatus().first().subscribe(e => {
+              this.status = e.statusMessage;
+              this.month = e.allMonth;
+              this.changeDetectorRef.markForCheck();
+            });
+          });
+          break;
+        case 'Last90':
+          this.aggregateService.getStatsForLast90Days().first().subscribe(e => {
             this.aggregates = e;
 
             this.aggregateService.getServerStatus().first().subscribe(e => {
@@ -118,7 +147,7 @@ export class AppComponent implements OnInit {
   onSelectYear(event: Event, year: string) {
     if (this.selectedYear !== year) {
       this.selectedYear = year;
-      this.selectedMonth = 'ALL';
+      this.selectedPeriod = 'ALL';
 
       this.aggregateService.getStatsForYear(this.selectedYear).first().subscribe(e => {
         this.aggregates = e;
@@ -145,9 +174,9 @@ export class AppComponent implements OnInit {
     return Array.from(allYears).sort().reverse();
   }
 
-  isMonthAvailable(month): boolean {
+  isDataAvailable(period): boolean {
     if (this.month) {
-      return this.month.some(e => e === this.selectedYear + this.monthNum[month]);
+      return this.month.some(e => e === this.selectedYear + this.monthNum[period]);
     } else {
       return false;
     }

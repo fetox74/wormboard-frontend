@@ -7,19 +7,24 @@
         <div class="yearmenuitem" *ngFor="let year of years" (click)="onSelectYear($event, [year])">{{year}}</div>
       </div>
     </div>
-    <div id="all" class="month" (click)="onSelect('ALL')" [ngClass]="{'selected' : 'ALL' === selectedMonth}">ALL</div>
-    <div id="jan" class="month" (click)="onSelect('Jan')" [ngClass]="{'selected' : 'Jan' === selectedMonth, 'inactive' : !isMonthAvailable('Jan')}">Jan</div>
-    <div id="feb" class="month" (click)="onSelect('Feb')" [ngClass]="{'selected' : 'Feb' === selectedMonth, 'inactive' : !isMonthAvailable('Feb')}">Feb</div>
-    <div id="mar" class="month" (click)="onSelect('Mar')" [ngClass]="{'selected' : 'Mar' === selectedMonth, 'inactive' : !isMonthAvailable('Mar')}">Mar</div>
-    <div id="apr" class="month" (click)="onSelect('Apr')" [ngClass]="{'selected' : 'Apr' === selectedMonth, 'inactive' : !isMonthAvailable('Apr')}">Apr</div>
-    <div id="may" class="month" (click)="onSelect('May')" [ngClass]="{'selected' : 'May' === selectedMonth, 'inactive' : !isMonthAvailable('May')}">May</div>
-    <div id="jun" class="month" (click)="onSelect('Jun')" [ngClass]="{'selected' : 'Jun' === selectedMonth, 'inactive' : !isMonthAvailable('Jun')}">Jun</div>
-    <div id="jul" class="month" (click)="onSelect('Jul')" [ngClass]="{'selected' : 'Jul' === selectedMonth, 'inactive' : !isMonthAvailable('Jul')}">Jul</div>
-    <div id="aug" class="month" (click)="onSelect('Aug')" [ngClass]="{'selected' : 'Aug' === selectedMonth, 'inactive' : !isMonthAvailable('Aug')}">Aug</div>
-    <div id="sep" class="month" (click)="onSelect('Sep')" [ngClass]="{'selected' : 'Sep' === selectedMonth, 'inactive' : !isMonthAvailable('Sep')}">Sep</div>
-    <div id="oct" class="month" (click)="onSelect('Oct')" [ngClass]="{'selected' : 'Oct' === selectedMonth, 'inactive' : !isMonthAvailable('Oct')}">Oct</div>
-    <div id="nov" class="month" (click)="onSelect('Nov')" [ngClass]="{'selected' : 'Nov' === selectedMonth, 'inactive' : !isMonthAvailable('Nov')}">Nov</div>
-    <div id="dec" class="month" (click)="onSelect('Dec')" [ngClass]="{'selected' : 'Dec' === selectedMonth, 'inactive' : !isMonthAvailable('Dec')}">Dec</div>
+    <div id="all" class="period" (click)="onSelect('ALL')" [ngClass]="{'selected' : 'ALL' === selectedPeriod}">ALL</div>
+    <div id="q1" class="period" (click)="onSelect('Q1')" [ngClass]="{'selected' : 'Q1' === selectedPeriod, 'inactive' : !isDataAvailable('Q1')}">Q1</div>
+    <div id="q2" class="period" (click)="onSelect('Q2')" [ngClass]="{'selected' : 'Q2' === selectedPeriod, 'inactive' : !isDataAvailable('Q2')}">Q2</div>
+    <div id="q3" class="period" (click)="onSelect('Q3')" [ngClass]="{'selected' : 'Q3' === selectedPeriod, 'inactive' : !isDataAvailable('Q3')}">Q3</div>
+    <div id="q4" class="period" (click)="onSelect('Q4')" [ngClass]="{'selected' : 'Q4' === selectedPeriod, 'inactive' : !isDataAvailable('Q4')}">Q4</div>
+    <div id="jan" class="period" (click)="onSelect('Jan')" [ngClass]="{'selected' : 'Jan' === selectedPeriod, 'inactive' : !isDataAvailable('Jan')}">Jan</div>
+    <div id="feb" class="period" (click)="onSelect('Feb')" [ngClass]="{'selected' : 'Feb' === selectedPeriod, 'inactive' : !isDataAvailable('Feb')}">Feb</div>
+    <div id="mar" class="period" (click)="onSelect('Mar')" [ngClass]="{'selected' : 'Mar' === selectedPeriod, 'inactive' : !isDataAvailable('Mar')}">Mar</div>
+    <div id="apr" class="period" (click)="onSelect('Apr')" [ngClass]="{'selected' : 'Apr' === selectedPeriod, 'inactive' : !isDataAvailable('Apr')}">Apr</div>
+    <div id="may" class="period" (click)="onSelect('May')" [ngClass]="{'selected' : 'May' === selectedPeriod, 'inactive' : !isDataAvailable('May')}">May</div>
+    <div id="jun" class="period" (click)="onSelect('Jun')" [ngClass]="{'selected' : 'Jun' === selectedPeriod, 'inactive' : !isDataAvailable('Jun')}">Jun</div>
+    <div id="jul" class="period" (click)="onSelect('Jul')" [ngClass]="{'selected' : 'Jul' === selectedPeriod, 'inactive' : !isDataAvailable('Jul')}">Jul</div>
+    <div id="aug" class="period" (click)="onSelect('Aug')" [ngClass]="{'selected' : 'Aug' === selectedPeriod, 'inactive' : !isDataAvailable('Aug')}">Aug</div>
+    <div id="sep" class="period" (click)="onSelect('Sep')" [ngClass]="{'selected' : 'Sep' === selectedPeriod, 'inactive' : !isDataAvailable('Sep')}">Sep</div>
+    <div id="oct" class="period" (click)="onSelect('Oct')" [ngClass]="{'selected' : 'Oct' === selectedPeriod, 'inactive' : !isDataAvailable('Oct')}">Oct</div>
+    <div id="nov" class="period" (click)="onSelect('Nov')" [ngClass]="{'selected' : 'Nov' === selectedPeriod, 'inactive' : !isDataAvailable('Nov')}">Nov</div>
+    <div id="dec" class="period" (click)="onSelect('Dec')" [ngClass]="{'selected' : 'Dec' === selectedPeriod, 'inactive' : !isDataAvailable('Dec')}">Dec</div>
+    <div id="last90" class="period" (click)="onSelect('Last90')" [ngClass]="{'selected' : 'Last90' === selectedPeriod}">Last 90 days</div>
     <div class="serverinfo">{{status}}</div>
   </div>
 </div>

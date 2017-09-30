@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@an
 import {AggregateService} from '../service/aggregate.service';
 import {ZKBAggregate} from '../model/zkb-aggregate';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MenuItem} from 'primeng/primeng';
 
 @Component({
   selector: 'app-root',
@@ -23,9 +24,14 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
+  private contextMenuItems: MenuItem[];
+  public selectedCorp: ZKBAggregate;
+  public chartData: any;
+
   public condenseIsk = false;
   public displayAbout = false;
   public displayLegal = false;
+  public displayTimezone = false;
   public aggregates: ZKBAggregate[];
   public selectedPeriod: string;
   public selectedYear: string;
@@ -57,6 +63,26 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.contextMenuItems = [
+      {
+        label: 'Info',
+        icon: 'fa-info',
+        items: [
+          {label: 'Timezone', icon: 'fa-clock-o', command: (event) => this.showTimezone(this.selectedCorp)},
+          {label: 'Active players', icon: 'fa-user'}
+        ]
+      },
+      {
+        label: 'Graphs',
+        icon: 'fa-area-chart',
+        items: [
+          {label: 'Histogram', icon: 'fa-bar-chart'},
+          {label: 'Comparison', icon: 'fa-balance-scale'}
+        ]
+      },
+      {label: 'Search', icon: 'fa-search'}
+    ];
+
     this.aggregateService.getServerStatus().first().subscribe(e => {
       this.status = e.statusMessage;
       this.month = e.allMonth;
@@ -72,7 +98,8 @@ export class AppComponent implements OnInit {
   }
 
   onSelect(period: string) {
-    if (period !== this.selectedPeriod && (period === 'ALL' || period === 'Last90' || this.month.some(e => e === this.selectedYear + this.monthNum[period]))) {
+    if (period !== this.selectedPeriod &&
+       (period === 'ALL' || period === 'Last90' || this.month.some(e => e === this.selectedYear + this.monthNum[period]))) {
       this.selectedPeriod = period;
       switch (period) {
         case 'ALL':
@@ -183,6 +210,75 @@ export class AppComponent implements OnInit {
   }
 
   onToggleISKPipe(event: Event): void {
-    //this.changeDetectorRef.markForCheck();
+    // this.changeDetectorRef.markForCheck();
+  }
+
+  showTimezone(zkbAggregate: ZKBAggregate) {
+    switch (this.selectedPeriod) {
+      case 'ALL':
+        this.aggregateService.getHourlyCorpStatsForYear(zkbAggregate.corporation, this.selectedYear).first().subscribe(e => {
+          this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);;
+          this.displayTimezone = true;
+          this.changeDetectorRef.markForCheck();
+        });
+        break;
+      case 'Jan':
+      case 'Feb':
+      case 'Mar':
+      case 'Apr':
+      case 'May':
+      case 'Jun':
+      case 'Jul':
+      case 'Aug':
+      case 'Sep':
+      case 'Oct':
+      case 'Nov':
+      case 'Dec':
+        this.aggregateService.getHourlyCorpStatsForMonth(zkbAggregate.corporation, this.selectedYear + this.monthNum[this.selectedPeriod]).first().subscribe(e => {
+          this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);;
+          this.displayTimezone = true;
+          this.changeDetectorRef.markForCheck();
+        });
+        break;
+      case 'Q1':
+      case 'Q2':
+      case 'Q3':
+      case 'Q4':
+        this.aggregateService.getHourlyCorpStatsForQuarter(zkbAggregate.corporation, this.selectedYear + this.monthNum[this.selectedPeriod]).first().subscribe(e => {
+          this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);;
+          this.displayTimezone = true;
+          this.changeDetectorRef.markForCheck();
+        });
+        break;
+      case 'Last90':
+        this.aggregateService.getHourlyCorpStatsForLast90Days(zkbAggregate.corporation).first().subscribe(e => {
+          this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);
+          this.displayTimezone = true;
+          this.changeDetectorRef.markForCheck();
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
+  generateTimezoneChartData(kills: number[], aggressors: number[]): any {
+    return {
+      labels: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
+      datasets: [
+        {
+          label: '# kills (click to disable)',
+          backgroundColor: '#42A5F5',
+          borderColor: '#1E88E5',
+          data: kills
+        },
+        {
+          label: 'ø Aggressors (click to disable)',
+          backgroundColor: '#9CCC65',
+          borderColor: '#7CB342',
+          data: aggressors
+        }
+      ]
+    };
   }
 }

@@ -23,6 +23,7 @@
     "@angular/platform-server": "^4.4.4",
     "@angular/router": "^4.4.4",
     "angular2-bootstrap-switch": "^0.2.3",
+    "chart.js": "^2.7.0",
     "core-js": "^2.5.1",
     "font-awesome": "^4.7.0",
     "primeng": "^4.2.1",

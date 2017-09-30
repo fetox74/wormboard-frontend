@@ -2,17 +2,17 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {ButtonModule, DataTableModule, DialogModule, SharedModule} from 'primeng/primeng';
+import {ButtonModule, ChartModule, ContextMenuModule, DataTableModule, DialogModule, SharedModule} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BootstrapSwitchModule} from 'angular2-bootstrap-switch';
 
 import {AppComponent} from './component/app.component';
-import { IskPipe } from './pipe/isk.pipe';
+import {IskPipe} from './pipe/isk.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    IskPipe,
+    IskPipe
   ],
   imports: [
     BrowserModule,
@@ -22,8 +22,10 @@ import { IskPipe } from './pipe/isk.pipe';
     SharedModule,
     DialogModule,
     ButtonModule,
+    ContextMenuModule,
+    ChartModule,
     BrowserAnimationsModule,
-    BootstrapSwitchModule.forRoot(),
+    BootstrapSwitchModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })

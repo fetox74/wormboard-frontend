@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
-import {ZKBAggregate} from '../model/zkb-aggregate';
+import {ZWBAggregateCorp} from '../model/zwb-aggregate-corp';
 import {ServerStatus} from '../model/server-status';
-import {ZKBHourlyAggregate} from '../model/zkb-hourly-aggregate';
+import {ZWBHourlyAggregateCorp} from '../model/zwb-hourly-aggregate-corp';
 
 @Injectable()
 export class AggregateService {
@@ -26,49 +26,49 @@ export class AggregateService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getStatsForMonth(month: string): Observable<ZKBAggregate[]> {
+  getStatsForMonth(month: string): Observable<ZWBAggregateCorp[]> {
     return this.http.get(this.baseURL + this.queryMonth + month)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getStatsForQuarter(quarter: string): Observable<ZKBAggregate[]> {
+  getStatsForQuarter(quarter: string): Observable<ZWBAggregateCorp[]> {
     return this.http.get(this.baseURL + this.queryQuarter + quarter)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getStatsForLast90Days(): Observable<ZKBAggregate[]> {
+  getStatsForLast90Days(): Observable<ZWBAggregateCorp[]> {
     return this.http.get(this.baseURL + this.queryLast90Days)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getStatsForYear(year: string): Observable<ZKBAggregate[]> {
+  getStatsForYear(year: string): Observable<ZWBAggregateCorp[]> {
     return this.http.get(this.baseURL + this.queryYear + year)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getHourlyCorpStatsForMonth(corporation: string, month: string): Observable<ZKBHourlyAggregate> {
+  getHourlyCorpStatsForMonth(corporation: string, month: string): Observable<ZWBHourlyAggregateCorp> {
     return this.http.get(this.baseURL + this.queryHourlyCorpMonth + month + '&corporation=' + corporation)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getHourlyCorpStatsForQuarter(corporation: string, quarter: string): Observable<ZKBHourlyAggregate> {
+  getHourlyCorpStatsForQuarter(corporation: string, quarter: string): Observable<ZWBHourlyAggregateCorp> {
     return this.http.get(this.baseURL + this.queryHourlyCorpQuarter + quarter + '&corporation=' + corporation)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getHourlyCorpStatsForLast90Days(corporation: string): Observable<ZKBHourlyAggregate> {
+  getHourlyCorpStatsForLast90Days(corporation: string): Observable<ZWBHourlyAggregateCorp> {
     return this.http.get(this.baseURL + this.queryHourlyCorpLast90Days + corporation)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getHourlyCorpStatsForYear(corporation: string, year: string): Observable<ZKBHourlyAggregate> {
+  getHourlyCorpStatsForYear(corporation: string, year: string): Observable<ZWBHourlyAggregateCorp> {
     return this.http.get(this.baseURL + this.queryHourlyCorpYear + year + '&corporation=' + corporation)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {AggregateService} from '../service/aggregate.service';
-import {ZKBAggregate} from '../model/zkb-aggregate';
+import {ZWBAggregateCorp} from '../model/zwb-aggregate-corp';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MenuItem} from 'primeng/primeng';
 
@@ -25,14 +25,14 @@ import {MenuItem} from 'primeng/primeng';
 })
 export class AppComponent implements OnInit {
   private contextMenuItems: MenuItem[];
-  public selectedCorp: ZKBAggregate;
+  public selectedCorp: ZWBAggregateCorp;
   public chartData: any;
 
   public condenseIsk = false;
   public displayAbout = false;
   public displayLegal = false;
   public displayTimezone = false;
-  public aggregates: ZKBAggregate[];
+  public aggregates: ZWBAggregateCorp[];
   public selectedPeriod: string;
   public selectedYear: string;
   public years: string[];
@@ -213,7 +213,7 @@ export class AppComponent implements OnInit {
     // this.changeDetectorRef.markForCheck();
   }
 
-  showTimezone(zkbAggregate: ZKBAggregate) {
+  showTimezone(zkbAggregate: ZWBAggregateCorp) {
     switch (this.selectedPeriod) {
       case 'ALL':
         this.aggregateService.getHourlyCorpStatsForYear(zkbAggregate.corporation, this.selectedYear).first().subscribe(e => {
@@ -268,14 +268,14 @@ export class AppComponent implements OnInit {
       datasets: [
         {
           label: '# kills (click to disable)',
-          backgroundColor: '#42A5F5',
-          borderColor: '#1E88E5',
+          backgroundColor: '#65C8BD',
+          borderColor: '#53A69B',
           data: kills
         },
         {
           label: 'ø Aggressors (click to disable)',
-          backgroundColor: '#9CCC65',
-          borderColor: '#7CB342',
+          backgroundColor: '#59878C',
+          borderColor: '#4f777b',
           data: aggressors
         }
       ]

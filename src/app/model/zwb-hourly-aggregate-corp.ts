@@ -1,4 +1,4 @@
-export interface ZKBHourlyAggregate {
+export interface ZWBHourlyAggregateCorp {
   kills: number[];
   sumonkills: number[];
   avgkillsperdayactive: number[];

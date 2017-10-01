@@ -177,11 +177,35 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog header="Killtime distribution of {{selectedCorp?.corporation}}" [(visible)]="displayTimezone" modal="modal" width="800" responsive="true">
+<p-dialog id="timezone" header="Killtime distribution of {{selectedCorp?.corporation}}" [(visible)]="displayTimezone" modal="modal" width="1024" height="655"
+          positionTop="140" [contentStyle]="{'overflow':'visible'}" minHeight="655">
   <p-chart type="bar" [data]="chartData"></p-chart>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
       <button type="button" pButton icon="fa-check" (click)="displayTimezone=false" label="OK"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<p-dialog id="actchars" header="Active characters of {{selectedCorp?.corporation}}" [(visible)]="displayActiveCharacters" modal="modal" width="800" height="auto"
+positionTop="40" [contentStyle]="{'overflow-y':'scroll'}" maxHeight="455">
+  <div class="activechar" *ngFor="let activechar of activeCharData">
+    <img [src]="activechar.portraiturl">
+    <span>{{activechar.character}}</span>
+    <span>{{activechar.kills}}</span>
+    <span>{{activechar.losses}}</span>
+    <span *ngIf="activechar.kdratio != 'Infinity' && activechar.kdratio >= 1.0">{{activechar.kdratio | number:'1.2-2'}}</span>
+    <span class="negative-number" *ngIf="activechar.kdratio != 'Infinity' && activechar.kdratio < 1.0">{{activechar.kdratio | number:'1.2-2'}}</span>
+    <span *ngIf="activechar.kdratio == 'Infinity'">&#x221E;</span>
+    <span>{{activechar.kdefficiency | number:'1.2-2'}}</span>
+    <span>{{activechar.iskwon | number:'1.2-2' | isk:true}}</span>
+    <span>{{activechar.isklost | number:'1.2-2' | isk:true}}</span>
+    <span>{{activechar.netisk | number:'1.2-2' | isk:true}}</span>
+    <span>{{activechar.iskefficiency | number:'1.2-2'}}</span>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa-check" (click)="displayActiveCharacters=false" label="OK"></button>
     </div>
   </p-footer>
 </p-dialog>

@@ -46,7 +46,12 @@
 
   <p-column field="kills" header="kills" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}"></p-column>
 
-  <p-column field="losses" header="loss'" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}"></p-column>
+  <p-column field="losses" header="loss'" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
+    <ng-template let-col let-aggregate="rowData" pTemplate="body">
+      <span *ngIf="aggregate[col.field] == 0">{{aggregate[col.field]}}</span>
+      <span class="negative-number" *ngIf="aggregate[col.field] > 0">{{aggregate[col.field]}}</span>
+    </ng-template>
+  </p-column>
 
   <p-column field="kdratio" header="k / d" [sortable]="true" [style]="{'width':'4%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
     <ng-template let-col let-aggregate="rowData" pTemplate="body">
@@ -204,28 +209,33 @@ positionTop="40" [contentStyle]="{'overflow-y':'scroll'}" maxHeight="455">
         <span class="fixedwidth">{{activechar.kills}}</span>
 
         <span class="grey">losses:</span>
-        <span class="fixedwidth">{{activechar.losses}}</span>
+        <span class="fixedwidth" *ngIf="activechar.losses == 0">{{activechar.losses}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.losses > 0">{{activechar.losses}}</span>
 
         <span class="grey">k / d ratio:</span>
         <span class="fixedwidth" *ngIf="activechar.kdratio != 'Infinity' && activechar.kdratio >= 1.0">{{activechar.kdratio | number:'1.2-2'}}</span>
-        <span class="fixedwidth" class="negative-number" *ngIf="activechar.kdratio != 'Infinity' && activechar.kdratio < 1.0">{{activechar.kdratio | number:'1.2-2'}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.kdratio != 'Infinity' && activechar.kdratio < 1.0">{{activechar.kdratio | number:'1.2-2'}}</span>
         <span class="fixedwidth" *ngIf="activechar.kdratio == 'Infinity'">&#x221E;</span>
 
         <span class="grey">efficiency (%):</span>
-        <span class="fixedwidth">{{activechar.kdefficiency | number:'1.2-2'}}</span>
+        <span class="fixedwidth" *ngIf="activechar.kdefficiency >= 50.0">{{activechar.kdefficiency | number:'1.2-2'}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.kdefficiency < 50.0">{{activechar.kdefficiency | number:'1.2-2'}}</span>
       </div>
       <div class="iskinfo">
         <span class="grey">isk killed:</span>
         <span class="fixedwidth">{{activechar.iskwon | number:'1.2-2' | isk:true}}</span>
 
         <span class="grey">isk lost:</span>
-        <span class="fixedwidth">{{activechar.isklost | number:'1.2-2' | isk:true}}</span>
+        <span class="fixedwidth" *ngIf="activechar.isklost == 0">{{activechar.isklost | number:'1.2-2' | isk:true}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.isklost > 0">{{activechar.isklost | number:'1.2-2' | isk:true}}</span>
 
         <span class="grey">net isk:</span>
-        <span class="fixedwidth">{{activechar.netisk | number:'1.2-2' | isk:true}}</span>
+        <span class="fixedwidth" *ngIf="activechar.netisk >= 0">{{activechar.netisk | number:'1.2-2' | isk:true}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.netisk < 0">{{activechar.netisk | number:'1.2-2' | isk:true}}</span>
 
         <span class="grey">isk efficiency:</span>
-        <span class="fixedwidth">{{activechar.iskefficiency | number:'1.2-2'}}</span>
+        <span class="fixedwidth" *ngIf="activechar.iskefficiency >= 50.0">{{activechar.iskefficiency | number:'1.2-2'}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.iskefficiency < 50.0">{{activechar.iskefficiency | number:'1.2-2'}}</span>
       </div>
     </div>
   </div>

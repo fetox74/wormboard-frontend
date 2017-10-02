@@ -129,3 +129,35 @@ h2 {
 .ui-widget-content {
   border: none !important;
 }
+
+.activechar {
+  height: 74px;
+  background: linear-gradient(to right, #f9f9f9 0%, #ececec 100%);
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+img {
+  border-radius: 5px;
+}
+
+.info {
+  display: inline-block;
+  position: absolute;
+  margin-top: 4px;
+  margin-left: 10px;
+}
+
+.fixedwidth {
+  float: left;
+  width: 75px;
+}
+
+.grey {
+  line-height: 20px;
+  color: #7d9394;
+  font-size: smaller;
+  float: left;
+  width: 90px;
+}

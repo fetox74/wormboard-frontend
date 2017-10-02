@@ -218,7 +218,7 @@ export class AppComponent implements OnInit {
   showTimezone(zkbAggregate: ZWBAggregateCorp) {
     switch (this.selectedPeriod) {
       case 'ALL':
-        this.aggregateService.getHourlyCorpStatsForYear(zkbAggregate.corporation, this.selectedYear).first().subscribe(e => {
+        this.aggregateService.getHourlyCorpStatsForYear(zkbAggregate.corporationid, this.selectedYear).first().subscribe(e => {
           this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);
           this.displayTimezone = true;
           this.changeDetectorRef.markForCheck();
@@ -236,7 +236,7 @@ export class AppComponent implements OnInit {
       case 'Oct':
       case 'Nov':
       case 'Dec':
-        this.aggregateService.getHourlyCorpStatsForMonth(zkbAggregate.corporation, this.selectedYear + this.monthNum[this.selectedPeriod]).first().subscribe(e => {
+        this.aggregateService.getHourlyCorpStatsForMonth(zkbAggregate.corporationid, this.selectedYear + this.monthNum[this.selectedPeriod]).first().subscribe(e => {
           this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);
           this.displayTimezone = true;
           this.changeDetectorRef.markForCheck();
@@ -246,14 +246,14 @@ export class AppComponent implements OnInit {
       case 'Q2':
       case 'Q3':
       case 'Q4':
-        this.aggregateService.getHourlyCorpStatsForQuarter(zkbAggregate.corporation, this.selectedYear + this.monthNum[this.selectedPeriod]).first().subscribe(e => {
+        this.aggregateService.getHourlyCorpStatsForQuarter(zkbAggregate.corporationid, this.selectedYear + this.monthNum[this.selectedPeriod]).first().subscribe(e => {
           this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);
           this.displayTimezone = true;
           this.changeDetectorRef.markForCheck();
         });
         break;
       case 'Last90':
-        this.aggregateService.getHourlyCorpStatsForLast90Days(zkbAggregate.corporation).first().subscribe(e => {
+        this.aggregateService.getHourlyCorpStatsForLast90Days(zkbAggregate.corporationid).first().subscribe(e => {
           this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);
           this.displayTimezone = true;
           this.changeDetectorRef.markForCheck();
@@ -288,7 +288,7 @@ export class AppComponent implements OnInit {
   showActiveCharacters(zkbAggregate: ZWBAggregateCorp) {
     switch (this.selectedPeriod) {
       case 'ALL':
-        this.aggregateService.getActiveCharStatsForYear(zkbAggregate.corporation, this.selectedYear).first().subscribe(e => {
+        this.aggregateService.getActiveCharStatsForYear(zkbAggregate.corporationid, this.selectedYear).first().subscribe(e => {
           this.activeCharData = e;
           this.displayActiveCharacters = true;
           this.changeDetectorRef.markForCheck();
@@ -306,7 +306,7 @@ export class AppComponent implements OnInit {
       case 'Oct':
       case 'Nov':
       case 'Dec':
-        this.aggregateService.getActiveCharStatsForMonth(zkbAggregate.corporation, this.selectedYear + this.monthNum[this.selectedPeriod]).first().subscribe(e => {
+        this.aggregateService.getActiveCharStatsForMonth(zkbAggregate.corporationid, this.selectedYear + this.monthNum[this.selectedPeriod]).first().subscribe(e => {
           this.activeCharData = e;
           this.displayActiveCharacters = true;
           this.changeDetectorRef.markForCheck();
@@ -316,14 +316,14 @@ export class AppComponent implements OnInit {
       case 'Q2':
       case 'Q3':
       case 'Q4':
-        this.aggregateService.getActiveCharStatsForQuarter(zkbAggregate.corporation, this.selectedYear + this.monthNum[this.selectedPeriod]).first().subscribe(e => {
+        this.aggregateService.getActiveCharStatsForQuarter(zkbAggregate.corporationid, this.selectedYear + this.monthNum[this.selectedPeriod]).first().subscribe(e => {
           this.activeCharData = e;
           this.displayActiveCharacters = true;
           this.changeDetectorRef.markForCheck();
         });
         break;
       case 'Last90':
-        this.aggregateService.getActiveCharStatsForLast90Days(zkbAggregate.corporation).first().subscribe(e => {
+        this.aggregateService.getActiveCharStatsForLast90Days(zkbAggregate.corporationid).first().subscribe(e => {
           this.activeCharData = e;
           this.displayActiveCharacters = true;
           this.changeDetectorRef.markForCheck();

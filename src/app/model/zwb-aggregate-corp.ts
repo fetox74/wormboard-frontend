@@ -1,4 +1,5 @@
 export interface ZWBAggregateCorp {
+  corporationid: number;
   corporation: string;
   kills: number;
   losses: number;

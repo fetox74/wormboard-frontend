@@ -1,6 +1,6 @@
 export interface ZWBAggregateChar {
+  characterid: number;
   character: string;
-  portraiturl: string;
   kills: number;
   losses: number;
   kdratio: number;

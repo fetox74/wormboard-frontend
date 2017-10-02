@@ -17,11 +17,11 @@ export class AggregateService {
   private queryHourlyCorpMonth = 'getHourlyCorpStatsForMonth?month=';
   private queryHourlyCorpQuarter = 'getHourlyCorpStatsForQuarter?quarter=';
   private queryHourlyCorpYear = 'getHourlyCorpStatsForYear?year=';
-  private queryHourlyCorpLast90Days = 'getHourlyCorpStatsForLast90Days?corporation=';
+  private queryHourlyCorpLast90Days = 'getHourlyCorpStatsForLast90Days?corporationid=';
   private queryActiveCharsMonth = 'getCorpActivePlayerStatsForMonth?month=';
   private queryActiveCharsQuarter = 'getCorpActivePlayerStatsForQuarter?quarter=';
   private queryActiveCharsYear = 'getCorpActivePlayerStatsForYear?year=';
-  private queryActiveCharsLast90Days = 'getCorpActivePlayerStatsForLast90Days?corporation=';
+  private queryActiveCharsLast90Days = 'getCorpActivePlayerStatsForLast90Days?corporationid=';
 
   constructor(private http: Http) {}
 
@@ -55,50 +55,50 @@ export class AggregateService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getHourlyCorpStatsForMonth(corporation: string, month: string): Observable<ZWBHourlyAggregateCorp> {
-    return this.http.get(this.baseURL + this.queryHourlyCorpMonth + month + '&corporation=' + corporation)
+  getHourlyCorpStatsForMonth(corporationid: number, month: string): Observable<ZWBHourlyAggregateCorp> {
+    return this.http.get(this.baseURL + this.queryHourlyCorpMonth + month + '&corporationid=' + corporationid)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getHourlyCorpStatsForQuarter(corporation: string, quarter: string): Observable<ZWBHourlyAggregateCorp> {
-    return this.http.get(this.baseURL + this.queryHourlyCorpQuarter + quarter + '&corporation=' + corporation)
+  getHourlyCorpStatsForQuarter(corporationid: number, quarter: string): Observable<ZWBHourlyAggregateCorp> {
+    return this.http.get(this.baseURL + this.queryHourlyCorpQuarter + quarter + '&corporationid=' + corporationid)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getHourlyCorpStatsForLast90Days(corporation: string): Observable<ZWBHourlyAggregateCorp> {
-    return this.http.get(this.baseURL + this.queryHourlyCorpLast90Days + corporation)
+  getHourlyCorpStatsForLast90Days(corporationid: number): Observable<ZWBHourlyAggregateCorp> {
+    return this.http.get(this.baseURL + this.queryHourlyCorpLast90Days + corporationid)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getHourlyCorpStatsForYear(corporation: string, year: string): Observable<ZWBHourlyAggregateCorp> {
-    return this.http.get(this.baseURL + this.queryHourlyCorpYear + year + '&corporation=' + corporation)
+  getHourlyCorpStatsForYear(corporationid: number, year: string): Observable<ZWBHourlyAggregateCorp> {
+    return this.http.get(this.baseURL + this.queryHourlyCorpYear + year + '&corporationid=' + corporationid)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getActiveCharStatsForMonth(corporation: string, month: string): Observable<ZWBAggregateChar> {
-    return this.http.get(this.baseURL + this.queryActiveCharsMonth + month + '&corporation=' + corporation)
+  getActiveCharStatsForMonth(corporationid: number, month: string): Observable<ZWBAggregateChar> {
+    return this.http.get(this.baseURL + this.queryActiveCharsMonth + month + '&corporationid=' + corporationid)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getActiveCharStatsForQuarter(corporation: string, quarter: string): Observable<ZWBAggregateChar> {
-    return this.http.get(this.baseURL + this.queryActiveCharsQuarter + quarter + '&corporation=' + corporation)
+  getActiveCharStatsForQuarter(corporationid: number, quarter: string): Observable<ZWBAggregateChar> {
+    return this.http.get(this.baseURL + this.queryActiveCharsQuarter + quarter + '&corporationid=' + corporationid)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getActiveCharStatsForLast90Days(corporation: string): Observable<ZWBAggregateChar> {
-    return this.http.get(this.baseURL + this.queryActiveCharsLast90Days + corporation)
+  getActiveCharStatsForLast90Days(corporationid: number): Observable<ZWBAggregateChar> {
+    return this.http.get(this.baseURL + this.queryActiveCharsLast90Days + corporationid)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  getActiveCharStatsForYear(corporation: string, year: string): Observable<ZWBAggregateChar> {
-    return this.http.get(this.baseURL + this.queryActiveCharsYear + year + '&corporation=' + corporation)
+  getActiveCharStatsForYear(corporationid: number, year: string): Observable<ZWBAggregateChar> {
+    return this.http.get(this.baseURL + this.queryActiveCharsYear + year + '&corporationid=' + corporationid)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

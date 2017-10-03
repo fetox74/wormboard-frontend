@@ -5,6 +5,7 @@ import {ZWBAggregateCorp} from '../model/zwb-aggregate-corp';
 import {ServerStatus} from '../model/server-status';
 import {ZWBHourlyAggregateCorp} from '../model/zwb-hourly-aggregate-corp';
 import {ZWBAggregateChar} from '../model/zwb-aggregate-char';
+import {ZWBHistoryCorp} from '../model/zwb-history-corp';
 
 @Injectable()
 export class AggregateService {
@@ -22,6 +23,10 @@ export class AggregateService {
   private queryActiveCharsQuarter = 'getCorpActivePlayerStatsForQuarter?quarter=';
   private queryActiveCharsYear = 'getCorpActivePlayerStatsForYear?year=';
   private queryActiveCharsLast90Days = 'getCorpActivePlayerStatsForLast90Days?corporationid=';
+  private queryCorpHistoryMonth = 'getCorpHistoryForMonth?month=';
+  private queryCorpHistoryQuarter = 'getCorpHistoryForQuarter?quarter=';
+  private queryCorpHistoryYear = 'getCorpHistoryForYear?year=';
+  private queryCorpHistoryLast90Days = 'getCorpHistoryForLast90Days?corporationid=';
 
   constructor(private http: Http) {}
 
@@ -99,6 +104,30 @@ export class AggregateService {
 
   getActiveCharStatsForYear(corporationid: number, year: string): Observable<ZWBAggregateChar> {
     return this.http.get(this.baseURL + this.queryActiveCharsYear + year + '&corporationid=' + corporationid)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getCorpHistoryForMonth(corporationid: number, month: string): Observable<ZWBHistoryCorp> {
+    return this.http.get(this.baseURL + this.queryCorpHistoryMonth + month + '&corporationid=' + corporationid)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getCorpHistoryForQuarter(corporationid: number, quarter: string): Observable<ZWBHistoryCorp> {
+    return this.http.get(this.baseURL + this.queryCorpHistoryQuarter + quarter + '&corporationid=' + corporationid)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getCorpHistoryForLast90Days(corporationid: number): Observable<ZWBHistoryCorp> {
+    return this.http.get(this.baseURL + this.queryCorpHistoryLast90Days + corporationid)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getCorpHistoryForYear(corporationid: number, year: string): Observable<ZWBHistoryCorp> {
+    return this.http.get(this.baseURL + this.queryCorpHistoryYear + year + '&corporationid=' + corporationid)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

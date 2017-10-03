@@ -246,4 +246,14 @@ positionTop="40" [contentStyle]="{'overflow-y':'scroll'}" maxHeight="455">
   </p-footer>
 </p-dialog>
 
+<p-dialog id="history" header="Development of {{selectedCorp?.corporation}}" [(visible)]="displayHistory" modal="modal" width="1024" height="655"
+          positionTop="140" [contentStyle]="{'overflow':'visible'}" minHeight="655">
+  <p-chart type="line" [data]="chartData"></p-chart>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa-check" (click)="displayHistory=false" label="OK"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
 <p-contextMenu #contextMenu [model]="contextMenuItems"></p-contextMenu>

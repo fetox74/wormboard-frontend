@@ -130,6 +130,10 @@ h2 {
   border: none !important;
 }
 
+::ng-deep.ui-autocomplete, ::ng-deep.ui-autocomplete-input {
+  width: 100%;
+}
+
 .activechar {
   height: 74px;
   background: linear-gradient(to right, #f9f9f9 0%, #ececec 100%);

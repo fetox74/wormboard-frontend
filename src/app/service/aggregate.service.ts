@@ -11,6 +11,7 @@ import {ZWBHistoryCorp} from '../model/zwb-history-corp';
 export class AggregateService {
   private baseURL = 'http://fetox-developments.com:8080/WormBoardREST/';
   private queryServer = 'getServerStatus';
+  private queryAllKnownCorps = 'getAllKnownCorporations';
   private queryMonth = 'getStatsForMonth?month=';
   private queryQuarter = 'getStatsForQuarter?quarter=';
   private queryYear = 'getStatsForYear?year=';
@@ -32,6 +33,12 @@ export class AggregateService {
 
   getServerStatus(): Observable<ServerStatus> {
     return this.http.get(this.baseURL + this.queryServer)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getAllKnownCorps(): Observable<string[]> {
+    return this.http.get(this.baseURL + this.queryAllKnownCorps)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

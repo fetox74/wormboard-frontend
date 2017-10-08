@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {ButtonModule, ChartModule, ContextMenuModule, DataTableModule, DialogModule, DropdownModule, SharedModule} from 'primeng/primeng';
+import {AutoCompleteModule, ButtonModule, ChartModule, ContextMenuModule, DataTableModule, DialogModule, DropdownModule, SharedModule} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BootstrapSwitchModule} from 'angular2-bootstrap-switch';
 
@@ -24,6 +24,7 @@ import {IskPipe} from './pipe/isk.pipe';
     ButtonModule,
     ContextMenuModule,
     DropdownModule,
+    AutoCompleteModule,
     ChartModule,
     BrowserAnimationsModule,
     BootstrapSwitchModule.forRoot()

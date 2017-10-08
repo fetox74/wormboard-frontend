@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AggregateService} from '../service/aggregate.service';
 import {ZWBAggregateCorp} from '../model/zwb-aggregate-corp';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {MenuItem, SelectItem} from 'primeng/primeng';
+import {DataTable, MenuItem, SelectItem} from 'primeng/primeng';
 
 @Component({
   selector: 'app-root',
@@ -24,14 +24,24 @@ import {MenuItem, SelectItem} from 'primeng/primeng';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
+  @ViewChild('dataTable')
+  public dataTable: DataTable;
+  @ViewChild('dataTable')
+  public dataTableER: ElementRef;
+  public first = 0;
+
   private contextMenuItems: MenuItem[];
   public selectedCorp: ZWBAggregateCorp;
   public historyData: any;
   public chartData: any;
   public activeCharData: any;
 
-  profiles: SelectItem[];
-  selectedProfile: any;
+  public profiles: SelectItem[];
+  public selectedProfile: any;
+
+  public corporation: string;
+  public corporations: string[];
+  public filteredCorporations: string[];
 
   public condenseIsk = false;
   public displayAbout = false;
@@ -39,6 +49,7 @@ export class AppComponent implements OnInit {
   public displayTimezone = false;
   public displayActiveCharacters = false;
   public displayHistory = false;
+  public displaySearch = false;
   public aggregates: ZWBAggregateCorp[];
   public selectedPeriod: string;
   public selectedYear: string;
@@ -87,7 +98,7 @@ export class AppComponent implements OnInit {
           {label: 'Comparison', icon: 'fa-balance-scale'}
         ]
       },
-      {label: 'Search', icon: 'fa-search'}
+      {label: 'Search', icon: 'fa-search', command: (event) => this.showSearch()}
     ];
 
     this.profiles = [];
@@ -109,6 +120,12 @@ export class AppComponent implements OnInit {
             this.aggregates = e;
             this.changeDetectorRef.markForCheck();
         });
+    });
+
+    this.aggregateService.getAllKnownCorps()
+      .first()
+      .subscribe(e => {
+        this.corporations = e;
     });
   }
 
@@ -489,6 +506,47 @@ export class AppComponent implements OnInit {
         break;
       default:
         break;
+    }
+  }
+
+  showSearch() {
+    this.displaySearch = true;
+  }
+
+  doSearch() {
+    this.displaySearch = false;
+
+    this.aggregates.sort((a, b) => (a[this.dataTable.sortField] - b[this.dataTable.sortField]) * this.dataTable.sortOrder);
+
+    let i = 0;
+    for (const aggregate of this.aggregates) {
+      if (aggregate.corporation === this.corporation) {
+        this.selectedCorp = aggregate;
+        this.first = i - i % this.dataTable.rows;
+        this.scrollToSelection(this.dataTable, this.dataTableER.nativeElement, i % this.dataTable.rows);
+      }
+      i++;
+    }
+  }
+
+  filterCorporations(event) {
+    this.filteredCorporations = [];
+    for (let i = 0; i < this.corporations.length; i++) {
+      const corp = this.corporations[i];
+      if (corp.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
+        this.filteredCorporations.push(corp);
+      }
+    }
+  }
+
+  scrollToSelection(table: DataTable, element: HTMLElement, index) {
+    if (table.selection !== null && table.value !== null) {
+      // let index = table.value.indexOf(table.selection);
+      const list = document.querySelectorAll('tr');
+      if (list !== null && index < list.length) {
+        const targetElement = list.item(index);
+        targetElement.scrollIntoView();
+      }
     }
   }
 }

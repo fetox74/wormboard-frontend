@@ -29,8 +29,9 @@
   </div>
 </div>
 
-<p-dataTable [value]="aggregates" [rows]="100" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,25,50,100]" selectionMode="single"
-             scrollable="true" scrollHeight="calc(100vh - 168px)" sortField="netisk" sortOrder="-1" [(selection)]="selectedCorp" [contextMenu]="contextMenu">
+<p-dataTable #dataTable [value]="aggregates" [rows]="100" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,25,50,100]" selectionMode="single"
+             scrollable="true" scrollHeight="calc(100vh - 168px)" sortField="netisk" sortOrder="-1" [(selection)]="selectedCorp" [contextMenu]="contextMenu"
+             [(first)]="first">
 
   <p-column header="rank" [style]="{'width':'3%', 'text-align':'right', 'white-space':'nowrap', 'overflow':'hidden'}">
     <ng-template let-col let-ri="rowIndex" pTemplate="body">
@@ -255,6 +256,13 @@ positionTop="40" [contentStyle]="{'overflow-y':'scroll'}" maxHeight="455">
                   [style]="{'width':'230px', 'margin': '.5em .4em .5em .4em', 'text-align': 'left'}"></p-dropdown>
       <button type="button" pButton icon="fa-check" (click)="displayHistory=false" label="OK"></button>
     </div>
+  </p-footer>
+</p-dialog>
+
+<p-dialog id="search" header="Search for corporation" [(visible)]="displaySearch" modal="modal" width="480" [contentStyle]="{'overflow':'visible'}">
+  <p-autoComplete [(ngModel)]="corporation" [suggestions]="filteredCorporations" (completeMethod)="filterCorporations($event)"></p-autoComplete>
+  <p-footer>
+    <button type="button" pButton icon="fa-check" (click)="doSearch()" label="OK"></button>
   </p-footer>
 </p-dialog>
 

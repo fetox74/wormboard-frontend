@@ -9,7 +9,7 @@ import {ZWBHistoryCorp} from '../model/zwb-history-corp';
 
 @Injectable()
 export class AggregateService {
-  private baseURL = 'http://fetox-developments.com:8080/WormBoardREST/';
+  private baseURL = 'http://localhost:8080/'; // TODO: REVERT!!
   private queryServer = 'getServerStatus';
   private queryAllKnownCorps = 'getAllKnownCorporations';
   private queryMonth = 'getStatsForMonth?month=';

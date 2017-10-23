@@ -8,6 +8,7 @@ import {BootstrapSwitchModule} from 'angular2-bootstrap-switch';
 
 import {AppComponent} from './component/app.component';
 import {IskPipe} from './pipe/isk.pipe';
+import {OrderModule} from 'ngx-order-pipe';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {IskPipe} from './pipe/isk.pipe';
     DropdownModule,
     AutoCompleteModule,
     ChartModule,
+    OrderModule,
     BrowserAnimationsModule,
     BootstrapSwitchModule.forRoot()
   ],

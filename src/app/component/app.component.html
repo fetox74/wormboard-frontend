@@ -199,7 +199,7 @@
 
 <p-dialog id="actchars" header="Active characters of {{selectedCorp?.corporation}}" [(visible)]="displayActiveCharacters" modal="modal" width="800" height="auto"
 positionTop="40" [contentStyle]="{'overflow-y':'scroll'}" maxHeight="455">
-  <div class="activechar" *ngFor="let activechar of activeCharData">
+  <div class="activechar" *ngFor="let activechar of activeCharData | orderBy: 'netisk' : true">
     <img [src]="'https://imageserver.eveonline.com/Character/' + activechar.characterid + '_64.jpg'">
     <div class="info">
       <div class="charinfo">

@@ -127,137 +127,15 @@
 <div class="footer">
   <switch id="isk-switch" [(status)]="condenseIsk" onText="on" offText="off" size="mini" (statusChange)="onToggleISKPipe($event)"></switch>
   <span id="isk-switch-label">Condense ISK</span>
-  <span id="about" (click)="displayAbout=true">About</span> / <span id="legal" (click)="displayLegal=true">Legal</span>
+  <span id="about" (click)="about.display=true">About</span> / <span id="legal" (click)="legal.display=true">Legal</span>
 </div>
 
-<p-dialog header="About WormBoard" [(visible)]="displayAbout" modal="modal" width="700" responsive="true">
-  <h3>Why</h3>
-  <p>WormBoard is an Eve Online wormhole corp comparison list heavily inspired by the work of Noobman (CEO of Hard Knocks) and ExookiZ (CEO of Scary
-    Wormhole People).
-    <br><br>The main motivation is to make smaller wormhole groups more comparable to larger ones, thus completely ignoring alliances and shared killmails.</p>
-  <br>
-  <h3>How</h3>
-  <p>It fetches all kills per day from zKillboard.com and filters for the ones happening in w-space, then adding them to daily aggregates based on the final hit
-    corporation.<br><br>
-    That way kills are only counted for the final hit corp and only the attackers of that corp are taken into account, this is intended.
-    It does not remove infrastructure kills, because corporations that have specialized in that field need to be accommodated too,
-    as well as lucky offline POS finds.</p>
-  <br>
-  <h3>Who</h3>
-  <ul>
-    <li>Ingame: fetox74</li>
-    <li>IRL: <a href="mailto:odittrich@gmx.de">odittrich@gmx.de</a></li>
-  </ul>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <button type="button" pButton icon="fa-check" (click)="displayAbout=false" label="OK"></button>
-    </div>
-  </p-footer>
-</p-dialog>
+<app-about-dialog #about></app-about-dialog>
+<app-legal-dialog #legal></app-legal-dialog>
 
-<p-dialog header="Legal" [(visible)]="displayLegal" modal="modal" width="640" responsive="true">
-  <h3>CCP</h3>
-  <p>EVE Online and the EVE logo are the registered trademarks of CCP hf. All rights are reserved worldwide.
-    All other trademarks are the property of their respective owners. EVE Online, the EVE logo,
-    EVE and all associated logos and designs are the intellectual property of CCP hf.
-    All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating
-    to these trademarks are likewise the intellectual property of CCP hf.
-    CCP is in no way responsible for the content on or functioning of this website, nor can it be liable for any damage arising from the use of this
-    website.</p>
-  <br>
-  <h3>3rd Party</h3>
-  <p>WormBoard makes heavy use of the zKillboard API, thanks to Squizz Caphinator for making it public!</p>
-  <h4>Un-ordered list of Software used</h4>
-  <ul>
-    <li>Angular 2</li>
-    <li>PrimeNG</li>
-    <li>Spring Boot</li>
-    <li>Google Guava</li>
-    <li>PostgreSQL</li>
-    <li>Apache Tomcat / HTTP Server</li>
-    <li>Python</li>
-  </ul>
-  <br>
-  <h3>License</h3>
-  <p>WormBoard sources are licensed under the AGPLv3. Full license text is available in the GitHub repository.</p>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <button type="button" pButton icon="fa-check" (click)="displayLegal=false" label="OK"></button>
-    </div>
-  </p-footer>
-</p-dialog>
-
-<p-dialog id="timezone" header="Killtime distribution of {{selectedCorp?.corporation}}" [(visible)]="displayTimezone" modal="modal" width="1024" height="655"
-          positionTop="140" [contentStyle]="{'overflow':'visible'}" minHeight="655">
-  <p-chart type="bar" [data]="chartData"></p-chart>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <button type="button" pButton icon="fa-check" (click)="displayTimezone=false" label="OK"></button>
-    </div>
-  </p-footer>
-</p-dialog>
-
-<p-dialog id="actchars" header="Active characters of {{selectedCorp?.corporation}}" [(visible)]="displayActiveCharacters" modal="modal" width="800" height="auto"
-positionTop="40" [contentStyle]="{'overflow-y':'scroll'}" maxHeight="455">
-  <div class="activechar" *ngFor="let activechar of activeCharData | orderBy: 'netisk' : true">
-    <img [src]="'https://imageserver.eveonline.com/Character/' + activechar.characterid + '_64.jpg'">
-    <div class="info">
-      <div class="charinfo">
-        <span><a target="_blank" href="https://zkillboard.com/character/{{activechar.characterid}}">{{activechar.character}}</a></span>
-      </div>
-      <div class="killinfo">
-        <span class="grey">kills:</span>
-        <span class="fixedwidth">{{activechar.kills}}</span>
-
-        <span class="grey">losses:</span>
-        <span class="fixedwidth" *ngIf="activechar.losses == 0">{{activechar.losses}}</span>
-        <span class="fixedwidth negative-number" *ngIf="activechar.losses > 0">{{activechar.losses}}</span>
-
-        <span class="grey">k / d ratio:</span>
-        <span class="fixedwidth" *ngIf="activechar.kdratio != 'Infinity' && activechar.kdratio >= 1.0">{{activechar.kdratio | number:'1.2-2'}}</span>
-        <span class="fixedwidth negative-number" *ngIf="activechar.kdratio != 'Infinity' && activechar.kdratio < 1.0">{{activechar.kdratio | number:'1.2-2'}}</span>
-        <span class="fixedwidth" *ngIf="activechar.kdratio == 'Infinity'">&#x221E;</span>
-
-        <span class="grey">efficiency (%):</span>
-        <span class="fixedwidth" *ngIf="activechar.kdefficiency >= 50.0">{{activechar.kdefficiency | number:'1.2-2'}}</span>
-        <span class="fixedwidth negative-number" *ngIf="activechar.kdefficiency < 50.0">{{activechar.kdefficiency | number:'1.2-2'}}</span>
-      </div>
-      <div class="iskinfo">
-        <span class="grey">isk killed:</span>
-        <span class="fixedwidth">{{activechar.iskwon | number:'1.2-2' | isk:true}}</span>
-
-        <span class="grey">isk lost:</span>
-        <span class="fixedwidth" *ngIf="activechar.isklost == 0">{{activechar.isklost | number:'1.2-2' | isk:true}}</span>
-        <span class="fixedwidth negative-number" *ngIf="activechar.isklost > 0">{{activechar.isklost | number:'1.2-2' | isk:true}}</span>
-
-        <span class="grey">net isk:</span>
-        <span class="fixedwidth" *ngIf="activechar.netisk >= 0">{{activechar.netisk | number:'1.2-2' | isk:true}}</span>
-        <span class="fixedwidth negative-number" *ngIf="activechar.netisk < 0">{{activechar.netisk | number:'1.2-2' | isk:true}}</span>
-
-        <span class="grey">isk efficiency:</span>
-        <span class="fixedwidth" *ngIf="activechar.iskefficiency >= 50.0">{{activechar.iskefficiency | number:'1.2-2'}}</span>
-        <span class="fixedwidth negative-number" *ngIf="activechar.iskefficiency < 50.0">{{activechar.iskefficiency | number:'1.2-2'}}</span>
-      </div>
-    </div>
-  </div>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <button type="button" pButton icon="fa-check" (click)="displayActiveCharacters=false" label="OK"></button>
-    </div>
-  </p-footer>
-</p-dialog>
-
-<p-dialog id="history" header="Development of {{selectedCorp?.corporation}}" [(visible)]="displayHistory" modal="modal" width="1024" height="655"
-          positionTop="140" [contentStyle]="{'overflow':'visible'}" minHeight="655">
-  <p-chart type="line" [data]="chartData"></p-chart>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <p-dropdown class="profile" [options]="profiles" [(ngModel)]="selectedProfile" (onChange)="onHistoryProfileChange()"
-                  [style]="{'width':'230px', 'margin': '.5em .4em .5em .4em', 'text-align': 'left'}"></p-dropdown>
-      <button type="button" pButton icon="fa-check" (click)="displayHistory=false" label="OK"></button>
-    </div>
-  </p-footer>
-</p-dialog>
+<app-timezone-dialog [selectedCorp]="selectedCorp" [selectedYear]="selectedYear" [selectedPeriod]="selectedPeriod"></app-timezone-dialog>
+<app-active-chars-dialog [selectedCorp]="selectedCorp" [selectedYear]="selectedYear" [selectedPeriod]="selectedPeriod"></app-active-chars-dialog>
+<app-history-dialog [selectedCorp]="selectedCorp" [selectedYear]="selectedYear" [selectedPeriod]="selectedPeriod"></app-history-dialog>
 
 <p-dialog id="search" header="Search for corporation" [(visible)]="displaySearch" modal="modal" width="480" [contentStyle]="{'overflow':'visible'}">
   <p-autoComplete [(ngModel)]="corporation" [suggestions]="filteredCorporations" (completeMethod)="filterCorporations($event)"></p-autoComplete>

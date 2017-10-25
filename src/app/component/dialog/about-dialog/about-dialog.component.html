@@ -1,0 +1,24 @@
+<p-dialog header="About WormBoard" [(visible)]="display" modal="modal" width="700" responsive="true">
+  <h3>Why</h3>
+  <p>WormBoard is an Eve Online wormhole corp comparison list heavily inspired by the work of Noobman (CEO of Hard Knocks) and ExookiZ (CEO of Scary
+    Wormhole People).
+    <br><br>The main motivation is to make smaller wormhole groups more comparable to larger ones, thus completely ignoring alliances and shared killmails.</p>
+  <br>
+  <h3>How</h3>
+  <p>It fetches all kills per day from zKillboard.com and filters for the ones happening in w-space, then adding them to daily aggregates based on the final hit
+    corporation.<br><br>
+    That way kills are only counted for the final hit corp and only the attackers of that corp are taken into account, this is intended.
+    It does not remove infrastructure kills, because corporations that have specialized in that field need to be accommodated too,
+    as well as lucky offline POS finds.</p>
+  <br>
+  <h3>Who</h3>
+  <ul>
+    <li>Ingame: fetox74</li>
+    <li>IRL: <a href="mailto:odittrich@gmx.de">odittrich@gmx.de</a></li>
+  </ul>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa-check" (click)="display=false" label="OK"></button>
+    </div>
+  </p-footer>
+</p-dialog>

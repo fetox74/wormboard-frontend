@@ -1,0 +1,11 @@
+<p-dialog header="Development of {{selectedCorp?.corporation}}" [(visible)]="display" modal="modal" width="1024" height="655"
+          positionTop="140" [contentStyle]="{'overflow':'visible'}" minHeight="655">
+  <p-chart type="line" [data]="chartData"></p-chart>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <p-dropdown class="profile" [options]="profiles" [(ngModel)]="selectedProfile" (onChange)="onHistoryProfileChange()"
+                  [style]="{'width':'230px', 'margin': '.5em .4em .5em .4em', 'text-align': 'left'}"></p-dropdown>
+      <button type="button" pButton icon="fa-check" (click)="display=false" label="OK"></button>
+    </div>
+  </p-footer>
+</p-dialog>

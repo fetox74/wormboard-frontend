@@ -1,0 +1,49 @@
+<p-dialog header="Active characters of {{selectedCorp?.corporation}}" [(visible)]="display" modal="modal" width="800" height="auto"
+          positionTop="40" [contentStyle]="{'overflow-y':'scroll'}" maxHeight="455">
+  <div class="activechar" *ngFor="let activechar of activeCharData | orderBy: 'netisk' : true">
+    <img [src]="'https://imageserver.eveonline.com/Character/' + activechar.characterid + '_64.jpg'">
+    <div class="info">
+      <div class="charinfo">
+        <span><a target="_blank" href="https://zkillboard.com/character/{{activechar.characterid}}">{{activechar.character}}</a></span>
+      </div>
+      <div class="killinfo">
+        <span class="grey">kills:</span>
+        <span class="fixedwidth">{{activechar.kills}}</span>
+
+        <span class="grey">losses:</span>
+        <span class="fixedwidth" *ngIf="activechar.losses == 0">{{activechar.losses}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.losses > 0">{{activechar.losses}}</span>
+
+        <span class="grey">k / d ratio:</span>
+        <span class="fixedwidth" *ngIf="activechar.kdratio != 'Infinity' && activechar.kdratio >= 1.0">{{activechar.kdratio | number:'1.2-2'}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.kdratio != 'Infinity' && activechar.kdratio < 1.0">{{activechar.kdratio | number:'1.2-2'}}</span>
+        <span class="fixedwidth" *ngIf="activechar.kdratio == 'Infinity'">&#x221E;</span>
+
+        <span class="grey">efficiency (%):</span>
+        <span class="fixedwidth" *ngIf="activechar.kdefficiency >= 50.0">{{activechar.kdefficiency | number:'1.2-2'}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.kdefficiency < 50.0">{{activechar.kdefficiency | number:'1.2-2'}}</span>
+      </div>
+      <div class="iskinfo">
+        <span class="grey">isk killed:</span>
+        <span class="fixedwidth">{{activechar.iskwon | number:'1.2-2' | isk:true}}</span>
+
+        <span class="grey">isk lost:</span>
+        <span class="fixedwidth" *ngIf="activechar.isklost == 0">{{activechar.isklost | number:'1.2-2' | isk:true}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.isklost > 0">{{activechar.isklost | number:'1.2-2' | isk:true}}</span>
+
+        <span class="grey">net isk:</span>
+        <span class="fixedwidth" *ngIf="activechar.netisk >= 0">{{activechar.netisk | number:'1.2-2' | isk:true}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.netisk < 0">{{activechar.netisk | number:'1.2-2' | isk:true}}</span>
+
+        <span class="grey">isk efficiency:</span>
+        <span class="fixedwidth" *ngIf="activechar.iskefficiency >= 50.0">{{activechar.iskefficiency | number:'1.2-2'}}</span>
+        <span class="fixedwidth negative-number" *ngIf="activechar.iskefficiency < 50.0">{{activechar.iskefficiency | number:'1.2-2'}}</span>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa-check" (click)="display=false" label="OK"></button>
+    </div>
+  </p-footer>
+</p-dialog>

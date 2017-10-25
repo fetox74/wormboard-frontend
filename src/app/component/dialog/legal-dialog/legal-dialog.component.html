@@ -1,0 +1,31 @@
+<p-dialog header="Legal" [(visible)]="display" modal="modal" width="640" responsive="true">
+  <h3>CCP</h3>
+  <p>EVE Online and the EVE logo are the registered trademarks of CCP hf. All rights are reserved worldwide.
+    All other trademarks are the property of their respective owners. EVE Online, the EVE logo,
+    EVE and all associated logos and designs are the intellectual property of CCP hf.
+    All artwork, screenshots, characters, vehicles, storylines, world facts or other recognizable features of the intellectual property relating
+    to these trademarks are likewise the intellectual property of CCP hf.
+    CCP is in no way responsible for the content on or functioning of this website, nor can it be liable for any damage arising from the use of this
+    website.</p>
+  <br>
+  <h3>3rd Party</h3>
+  <p>WormBoard makes heavy use of the zKillboard API, thanks to Squizz Caphinator for making it public!</p>
+  <h4>Un-ordered list of Software used</h4>
+  <ul>
+    <li>Angular 2</li>
+    <li>PrimeNG</li>
+    <li>Spring Boot</li>
+    <li>Google Guava</li>
+    <li>PostgreSQL</li>
+    <li>Apache Tomcat / HTTP Server</li>
+    <li>Python</li>
+  </ul>
+  <br>
+  <h3>License</h3>
+  <p>WormBoard sources are licensed under the AGPLv3. Full license text is available in the GitHub repository.</p>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa-check" (click)="display=false" label="OK"></button>
+    </div>
+  </p-footer>
+</p-dialog>

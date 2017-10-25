@@ -3,6 +3,28 @@ import {AggregateService} from '../service/aggregate.service';
 import {ZWBAggregateCorp} from '../model/zwb-aggregate-corp';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DataTable, MenuItem, SelectItem} from 'primeng/primeng';
+import {HistoryDialogComponent} from './dialog/history-dialog/history-dialog.component';
+import {ActiveCharsDialogComponent} from './dialog/active-chars-dialog/active-chars-dialog.component';
+import {TimezoneDialogComponent} from './dialog/timezone-dialog/timezone-dialog.component';
+
+export const monthNum = {
+  'Jan': '01',
+  'Feb': '02',
+  'Mar': '03',
+  'Apr': '04',
+  'May': '05',
+  'Jun': '06',
+  'Jul': '07',
+  'Aug': '08',
+  'Sep': '09',
+  'Oct': '10',
+  'Nov': '11',
+  'Dec': '12',
+  'Q1': '01',
+  'Q2': '04',
+  'Q3': '07',
+  'Q4': '10'
+};
 
 @Component({
   selector: 'app-root',
@@ -30,25 +52,23 @@ export class AppComponent implements OnInit {
   public dataTableER: ElementRef;
   public first = 0;
 
+  @ViewChild(TimezoneDialogComponent)
+  private timezoneDialog: TimezoneDialogComponent;
+
+  @ViewChild(HistoryDialogComponent)
+  private historyDialog: HistoryDialogComponent;
+
+  @ViewChild(ActiveCharsDialogComponent)
+  private activeCharsDialog: ActiveCharsDialogComponent;
+
   private contextMenuItems: MenuItem[];
   public selectedCorp: ZWBAggregateCorp;
-  public historyData: any;
-  public chartData: any;
-  public activeCharData: any;
-
-  public profiles: SelectItem[];
-  public selectedProfile: any;
 
   public corporation: string;
-  public corporations: string[];
+  public knownCorporations: string[];
   public filteredCorporations: string[];
 
   public condenseIsk = false;
-  public displayAbout = false;
-  public displayLegal = false;
-  public displayTimezone = false;
-  public displayActiveCharacters = false;
-  public displayHistory = false;
   public displaySearch = false;
   public aggregates: ZWBAggregateCorp[];
   public selectedPeriod: string;
@@ -57,24 +77,6 @@ export class AppComponent implements OnInit {
   public month: string[];
   public status = 'loading server status...';
   public menuState = 'invisible';
-  private monthNum = {
-    'Jan': '01',
-    'Feb': '02',
-    'Mar': '03',
-    'Apr': '04',
-    'May': '05',
-    'Jun': '06',
-    'Jul': '07',
-    'Aug': '08',
-    'Sep': '09',
-    'Oct': '10',
-    'Nov': '11',
-    'Dec': '12',
-    'Q1': '01',
-    'Q2': '04',
-    'Q3': '07',
-    'Q4': '10'
-  };
 
   constructor(private aggregateService: AggregateService,
               private changeDetectorRef: ChangeDetectorRef) {
@@ -86,67 +88,56 @@ export class AppComponent implements OnInit {
         label: 'Info',
         icon: 'fa-info',
         items: [
-          {label: 'Timezone', icon: 'fa-clock-o', command: (event) => this.showTimezone(this.selectedCorp)},
-          {label: 'Active players', icon: 'fa-user', command: (event) => this.showActiveCharacters(this.selectedCorp)}
+          {label: 'Timezone', icon: 'fa-clock-o', command: (event) => this.timezoneDialog.show()},
+          {label: 'Active players', icon: 'fa-user', command: (event) => this.activeCharsDialog.show()}
         ]
       },
       {
         label: 'Graphs',
         icon: 'fa-area-chart',
         items: [
-          {label: 'History', icon: 'fa-bar-chart', command: (event) => this.showHistory(this.selectedCorp)},
+          {label: 'History', icon: 'fa-bar-chart', command: (event) => this.historyDialog.show()},
           {label: 'Comparison', icon: 'fa-balance-scale'}
         ]
       },
       {label: 'Search', icon: 'fa-search', command: (event) => this.showSearch()}
     ];
 
-    this.profiles = [];
-    this.profiles.push({label: 'Kills / losses + active chars', value: {id: 'kd'}});
-    this.profiles.push({label: 'ISK won / lost + net ISK', value: {id: 'isk'}});
-
     this.aggregateService.getServerStatus()
       .first()
-      .subscribe(e => {
-        this.status = e.statusMessage;
-        this.month = e.allMonth;
-        this.years = this.getAllYearsFromMonth(e.allMonth);
+      .subscribe(serverStatus => {
+        this.status = serverStatus.statusMessage;
+        this.month = serverStatus.allMonth;
+        this.years = this.getAllYearsFromMonth(serverStatus.allMonth);
 
         this.selectedPeriod = 'ALL';
         this.selectedYear = this.years[0];
         this.aggregateService.getStatsForYear(this.selectedYear)
           .first()
-          .subscribe(e => {
-            this.aggregates = e;
+          .subscribe(aggregates => {
+            this.aggregates = aggregates;
             this.changeDetectorRef.markForCheck();
         });
     });
 
     this.aggregateService.getAllKnownCorps()
       .first()
-      .subscribe(e => {
-        this.corporations = e;
+      .subscribe(knownCorporations => {
+        this.knownCorporations = knownCorporations;
     });
   }
 
   onSelect(period: string) {
     if (period !== this.selectedPeriod &&
-       (period === 'ALL' || period === 'Last90' || this.month.some(e => e === this.selectedYear + this.monthNum[period]))) {
+       (period === 'ALL' || period === 'Last90' || this.month.some(e => e === this.selectedYear + monthNum[period]))) {
       this.selectedPeriod = period;
       switch (period) {
         case 'ALL':
           this.aggregateService.getStatsForYear(this.selectedYear)
             .first()
-            .subscribe(e => {
-              this.aggregates = e;
-
-              this.aggregateService.getServerStatus()
-                .first()
-                .subscribe(e => {
-                  this.status = e.statusMessage;
-                  this.month = e.allMonth;
-                  this.changeDetectorRef.markForCheck();
-              });
+            .subscribe(aggregates => {
+              this.aggregates = aggregates;
+              this.getServerStatus();
           });
           break;
         case 'Jan':
@@ -161,57 +152,46 @@ export class AppComponent implements OnInit {
         case 'Oct':
         case 'Nov':
         case 'Dec':
-          this.aggregateService.getStatsForMonth(this.selectedYear + this.monthNum[period])
+          this.aggregateService.getStatsForMonth(this.selectedYear + monthNum[period])
             .first()
-            .subscribe(e => {
-              this.aggregates = e;
-
-              this.aggregateService.getServerStatus()
-                .first()
-                .subscribe(e => {
-                  this.status = e.statusMessage;
-                  this.month = e.allMonth;
-                  this.changeDetectorRef.markForCheck();
-              });
+            .subscribe(aggregates => {
+              this.aggregates = aggregates;
+              this.getServerStatus();
           });
           break;
         case 'Q1':
         case 'Q2':
         case 'Q3':
         case 'Q4':
-          this.aggregateService.getStatsForQuarter(this.selectedYear + this.monthNum[period])
+          this.aggregateService.getStatsForQuarter(this.selectedYear + monthNum[period])
             .first()
-            .subscribe(e => {
-              this.aggregates = e;
-
-              this.aggregateService.getServerStatus()
-                .first()
-                .subscribe(e => {
-                  this.status = e.statusMessage;
-                  this.month = e.allMonth;
-                  this.changeDetectorRef.markForCheck();
-              });
+            .subscribe(aggregates => {
+              this.aggregates = aggregates;
+              this.getServerStatus();
           });
           break;
         case 'Last90':
           this.aggregateService.getStatsForLast90Days()
             .first()
-            .subscribe(e => {
-              this.aggregates = e;
-
-              this.aggregateService.getServerStatus()
-                .first()
-                .subscribe(e => {
-                  this.status = e.statusMessage;
-                  this.month = e.allMonth;
-                  this.changeDetectorRef.markForCheck();
-              });
+            .subscribe(aggregates => {
+              this.aggregates = aggregates;
+              this.getServerStatus();
           });
           break;
         default:
           break;
       }
     }
+  }
+
+  private getServerStatus() {
+    this.aggregateService.getServerStatus()
+      .first()
+      .subscribe(serverStatus => {
+        this.status = serverStatus.statusMessage;
+        this.month = serverStatus.allMonth;
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   onYearMenu(event: Event): void {
@@ -226,16 +206,9 @@ export class AppComponent implements OnInit {
 
       this.aggregateService.getStatsForYear(this.selectedYear)
         .first()
-        .subscribe(e => {
-          this.aggregates = e;
-
-          this.aggregateService.getServerStatus()
-            .first()
-            .subscribe(e => {
-              this.status = e.statusMessage;
-              this.month = e.allMonth;
-              this.changeDetectorRef.markForCheck();
-          });
+        .subscribe(aggregates => {
+          this.aggregates = aggregates;
+          this.getServerStatus();
       });
     }
 
@@ -255,7 +228,7 @@ export class AppComponent implements OnInit {
 
   isDataAvailable(period): boolean {
     if (this.month) {
-      return this.month.some(e => e === this.selectedYear + this.monthNum[period]);
+      return this.month.some(e => e === this.selectedYear + monthNum[period]);
     } else {
       return false;
     }
@@ -263,250 +236,6 @@ export class AppComponent implements OnInit {
 
   onToggleISKPipe(event: Event): void {
     // this.changeDetectorRef.markForCheck();
-  }
-
-  showTimezone(zkbAggregate: ZWBAggregateCorp) {
-    switch (this.selectedPeriod) {
-      case 'ALL':
-        this.aggregateService.getHourlyCorpStatsForYear(zkbAggregate.corporationid, this.selectedYear)
-          .first()
-          .subscribe(e => {
-            this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);
-            this.displayTimezone = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      case 'Jan':
-      case 'Feb':
-      case 'Mar':
-      case 'Apr':
-      case 'May':
-      case 'Jun':
-      case 'Jul':
-      case 'Aug':
-      case 'Sep':
-      case 'Oct':
-      case 'Nov':
-      case 'Dec':
-        this.aggregateService.getHourlyCorpStatsForMonth(zkbAggregate.corporationid, this.selectedYear + this.monthNum[this.selectedPeriod])
-          .first()
-          .subscribe(e => {
-            this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);
-            this.displayTimezone = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      case 'Q1':
-      case 'Q2':
-      case 'Q3':
-      case 'Q4':
-        this.aggregateService.getHourlyCorpStatsForQuarter(zkbAggregate.corporationid, this.selectedYear + this.monthNum[this.selectedPeriod])
-          .first()
-          .subscribe(e => {
-            this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);
-            this.displayTimezone = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      case 'Last90':
-        this.aggregateService.getHourlyCorpStatsForLast90Days(zkbAggregate.corporationid)
-          .first()
-          .subscribe(e => {
-            this.chartData = this.generateTimezoneChartData(e.avgkillsperdayactive, e.avgonkills);
-            this.displayTimezone = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      default:
-        break;
-    }
-  }
-
-  showHistory(zkbAggregate: ZWBAggregateCorp) {
-    this.selectedProfile = this.profiles[0].value;
-
-    switch (this.selectedPeriod) {
-      case 'ALL':
-        this.aggregateService.getCorpHistoryForYear(zkbAggregate.corporationid, this.selectedYear)
-          .first()
-          .subscribe(e => {
-            this.historyData = e;
-            this.chartData = this.generateHistogramChartData(e.kills, e.losses, e.numactive,
-                                                 '# kills', '# losses', '# active players', false);
-            this.displayHistory = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      case 'Jan':
-      case 'Feb':
-      case 'Mar':
-      case 'Apr':
-      case 'May':
-      case 'Jun':
-      case 'Jul':
-      case 'Aug':
-      case 'Sep':
-      case 'Oct':
-      case 'Nov':
-      case 'Dec':
-        this.aggregateService.getCorpHistoryForMonth(zkbAggregate.corporationid, this.selectedYear + this.monthNum[this.selectedPeriod])
-          .first()
-          .subscribe(e => {
-            this.historyData = e;
-            this.chartData = this.generateHistogramChartData(e.kills, e.losses, e.numactive,
-                                                 '# kills', '# losses', '# active players', false);
-            this.displayHistory = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      case 'Q1':
-      case 'Q2':
-      case 'Q3':
-      case 'Q4':
-        this.aggregateService.getCorpHistoryForQuarter(zkbAggregate.corporationid, this.selectedYear + this.monthNum[this.selectedPeriod])
-          .first()
-          .subscribe(e => {
-            this.historyData = e;
-            this.chartData = this.generateHistogramChartData(e.kills, e.losses, e.numactive,
-                                                 '# kills', '# losses', '# active players', false);
-            this.displayHistory = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      case 'Last90':
-        this.aggregateService.getCorpHistoryForLast90Days(zkbAggregate.corporationid)
-          .first()
-          .subscribe(e => {
-            this.historyData = e;
-            this.chartData = this.generateHistogramChartData(e.kills, e.losses, e.numactive,
-                                                 '# kills', '# losses', '# active players', false);
-            this.displayHistory = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      default:
-        break;
-    }
-  }
-
-  onHistoryProfileChange(): void {
-    if (this.selectedProfile.id === 'kd') {
-      this.chartData = this.generateHistogramChartData(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
-                                           '# kills', '# losses', '# active players', false);
-    } else if (this.selectedProfile.id === 'isk') {
-      this.chartData = this.generateHistogramChartData(this.historyData.iskwon, this.historyData.isklost, this.historyData.netisk,
-                                           'b isk killed', 'b isk lost', 'net isk in b', true);
-    } else {
-      this.chartData = null;
-    }
-  }
-
-  generateTimezoneChartData(kills: number[], aggressors: number[]): any {
-    return {
-      labels: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
-      marginLeft: 60,
-      datasets: [
-        {
-          label: '# kills',
-          backgroundColor: '#65C8BD',
-          borderColor: '#53A69B',
-          data: kills
-        },
-        {
-          label: 'ø aggressors',
-          backgroundColor: '#59878C',
-          borderColor: '#4f777b',
-          data: aggressors
-        }
-      ]
-    };
-  }
-
-  generateHistogramChartData(positive: number[], negative: number[], additional: number[], positivelabel: string, negativelabel: string,
-                             additionallabel: string, additionaldash: boolean): any {
-    return {
-      labels: ['1. Jan', '15. Jan', '1. Feb', '15. Feb', '1. Mar', '15. Mar', '1. Apr', '15. Apr', '1. May', '15. May', '1. Jun', '15. Jun',
-               '1. Jul', '15. Jul', '1. Aug', '15. Aug', '1. Sep', '15. Sep', '1. Oct', '15. Oct', '1. Nov', '15. Nov', '1. Dec', '15. Dec'],
-      marginLeft: 60,
-      datasets: [
-        {
-          label: positivelabel,
-          backgroundColor: 'rgba(101, 200, 189, 0.5)',
-          borderColor: '#53A69B',
-          data: positive
-        },
-        {
-          label: negativelabel,
-          backgroundColor: 'rgba(177, 16, 0, 0.5)',
-          borderColor: '#7A0D00',
-          data: negative
-        },
-        {
-          label: additionallabel,
-          backgroundColor: additionaldash ? 'rgba(0, 0, 0, 0.0)' : 'rgba(89, 135, 140, 0.5)',
-          borderDash: additionaldash ? [15, 5] : [],
-          borderColor: additionaldash ? '#315054' : '#4f777b',
-          data: additional
-        }
-      ]
-    };
-  }
-
-  showActiveCharacters(zkbAggregate: ZWBAggregateCorp) {
-    switch (this.selectedPeriod) {
-      case 'ALL':
-        this.aggregateService.getActiveCharStatsForYear(zkbAggregate.corporationid, this.selectedYear)
-          .first()
-          .subscribe(e => {
-            this.activeCharData = e;
-            this.displayActiveCharacters = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      case 'Jan':
-      case 'Feb':
-      case 'Mar':
-      case 'Apr':
-      case 'May':
-      case 'Jun':
-      case 'Jul':
-      case 'Aug':
-      case 'Sep':
-      case 'Oct':
-      case 'Nov':
-      case 'Dec':
-        this.aggregateService.getActiveCharStatsForMonth(zkbAggregate.corporationid, this.selectedYear + this.monthNum[this.selectedPeriod])
-          .first()
-          .subscribe(e => {
-            this.activeCharData = e;
-            this.displayActiveCharacters = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      case 'Q1':
-      case 'Q2':
-      case 'Q3':
-      case 'Q4':
-        this.aggregateService.getActiveCharStatsForQuarter(zkbAggregate.corporationid, this.selectedYear + this.monthNum[this.selectedPeriod])
-          .first()
-          .subscribe(e => {
-            this.activeCharData = e;
-            this.displayActiveCharacters = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      case 'Last90':
-        this.aggregateService.getActiveCharStatsForLast90Days(zkbAggregate.corporationid)
-          .first()
-          .subscribe(e => {
-            this.activeCharData = e;
-            this.displayActiveCharacters = true;
-            this.changeDetectorRef.markForCheck();
-        });
-        break;
-      default:
-        break;
-    }
   }
 
   showSearch() {
@@ -531,8 +260,8 @@ export class AppComponent implements OnInit {
 
   filterCorporations(event) {
     this.filteredCorporations = [];
-    for (let i = 0; i < this.corporations.length; i++) {
-      const corp = this.corporations[i];
+    for (let i = 0; i < this.knownCorporations.length; i++) {
+      const corp = this.knownCorporations[i];
       if (corp.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
         this.filteredCorporations.push(corp);
       }

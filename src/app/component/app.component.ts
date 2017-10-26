@@ -34,10 +34,10 @@ export const monthNum = {
   animations: [
     trigger('menuState', [
       state('invisible', style({
-        margin: '-35px 0px 0px -10px'
+        marginTop: '-55px' // todo: why does '*' not work???
       })),
-      state('visible',   style({
-        margin: '5px 0px 0px -10px'
+      state('visible', style({
+        marginTop: '5px'
       })),
       transition('invisible => visible', animate('100ms ease-in')),
       transition('visible => invisible', animate('100ms ease-out'))
@@ -64,12 +64,13 @@ export class AppComponent implements OnInit {
   private contextMenuItems: MenuItem[];
   public selectedCorp: ZWBAggregateCorp;
 
-  public corporation: string;
+  public searchedCorp: string;
   public knownCorporations: string[];
   public filteredCorporations: string[];
 
   public condenseIsk = false;
   public displaySearch = false;
+  public compareMode = false;
   public aggregates: ZWBAggregateCorp[];
   public selectedPeriod: string;
   public selectedYear: string;
@@ -77,6 +78,7 @@ export class AppComponent implements OnInit {
   public month: string[];
   public status = 'loading server status...';
   public menuState = 'invisible';
+  public menuHeight = '-55px';
 
   constructor(private aggregateService: AggregateService,
               private changeDetectorRef: ChangeDetectorRef) {
@@ -96,11 +98,11 @@ export class AppComponent implements OnInit {
         label: 'Graphs',
         icon: 'fa-area-chart',
         items: [
-          {label: 'History', icon: 'fa-bar-chart', command: (event) => this.historyDialog.show()},
-          {label: 'Comparison', icon: 'fa-balance-scale'}
+          {label: 'History', icon: 'fa-bar-chart', command: (event) => this.historyDialog.show(null)},
+          {label: 'Comparison', icon: 'fa-balance-scale', command: (event) => this.showSearch(true)}
         ]
       },
-      {label: 'Search', icon: 'fa-search', command: (event) => this.showSearch()}
+      {label: 'Search', icon: 'fa-search', command: (event) => this.showSearch(false)}
     ];
 
     this.aggregateService.getServerStatus()
@@ -238,23 +240,34 @@ export class AppComponent implements OnInit {
     // this.changeDetectorRef.markForCheck();
   }
 
-  showSearch() {
+  showSearch(forComparison: boolean) {
     this.displaySearch = true;
+    this.compareMode = forComparison;
   }
 
   doSearch() {
     this.displaySearch = false;
 
-    this.aggregates.sort((a, b) => (a[this.dataTable.sortField] - b[this.dataTable.sortField]) * this.dataTable.sortOrder);
-
-    let i = 0;
-    for (const aggregate of this.aggregates) {
-      if (aggregate.corporation === this.corporation) {
-        this.selectedCorp = aggregate;
-        this.first = i - i % this.dataTable.rows;
-        this.scrollToSelection(this.dataTable, this.dataTableER.nativeElement, i % this.dataTable.rows);
+    let comparisonCorp: ZWBAggregateCorp = null;
+    if (this.compareMode) {
+      for (const aggregate of this.aggregates) {
+        if (aggregate.corporation === this.searchedCorp) {
+          comparisonCorp = aggregate;
+        }
       }
-      i++;
+      this.historyDialog.show(comparisonCorp);
+    } else {
+      this.aggregates.sort((a, b) => (a[this.dataTable.sortField] - b[this.dataTable.sortField]) * this.dataTable.sortOrder);
+
+      let i = 0;
+      for (const aggregate of this.aggregates) {
+        if (aggregate.corporation === this.searchedCorp) {
+          this.selectedCorp = aggregate;
+          this.first = i - i % this.dataTable.rows;
+          this.scrollToSelection(this.dataTable, this.dataTableER.nativeElement, i % this.dataTable.rows);
+        }
+        i++;
+      }
     }
   }
 

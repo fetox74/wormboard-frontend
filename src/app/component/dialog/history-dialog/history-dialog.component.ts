@@ -17,11 +17,15 @@ export class HistoryDialogComponent implements OnInit {
   public historyData: any;
   public chartData: any;
 
+  public historyDataComparison: any;
+  public chartDataComparison: any;
+
   public profiles: SelectItem[];
   public selectedProfile: any;
 
   @Input()
   public selectedCorp: ZWBAggregateCorp;
+  public comparisonCorp: ZWBAggregateCorp = null;
 
   @Input()
   public selectedPeriod: string;
@@ -38,7 +42,8 @@ export class HistoryDialogComponent implements OnInit {
     this.profiles.push({label: 'ISK won / lost + net ISK', value: {id: 'isk'}});
   }
 
-  public show() {
+  public show(comparisonCorp: ZWBAggregateCorp) {
+    this.comparisonCorp = comparisonCorp;
     this.selectedProfile = this.profiles[0].value;
 
     switch (this.selectedPeriod) {
@@ -52,6 +57,17 @@ export class HistoryDialogComponent implements OnInit {
             this.display = true;
             this.changeDetectorRef.markForCheck();
           });
+        if (this.comparisonCorp != null) {
+          this.aggregateService.getCorpHistoryForYear(this.comparisonCorp.corporationid, this.selectedYear)
+            .first()
+            .subscribe(historyData => {
+              this.historyDataComparison = historyData;
+              this.chartDataComparison = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
+                '# kills', '# losses', '# active players', false);
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+        }
         break;
       case 'Jan':
       case 'Feb':
@@ -74,6 +90,17 @@ export class HistoryDialogComponent implements OnInit {
             this.display = true;
             this.changeDetectorRef.markForCheck();
           });
+        if (this.comparisonCorp != null) {
+          this.aggregateService.getCorpHistoryForMonth(this.comparisonCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
+            .first()
+            .subscribe(historyData => {
+              this.historyDataComparison = historyData;
+              this.chartDataComparison = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
+                '# kills', '# losses', '# active players', false);
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+        }
         break;
       case 'Q1':
       case 'Q2':
@@ -88,6 +115,17 @@ export class HistoryDialogComponent implements OnInit {
             this.display = true;
             this.changeDetectorRef.markForCheck();
           });
+        if (this.comparisonCorp != null) {
+          this.aggregateService.getCorpHistoryForQuarter(this.comparisonCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
+            .first()
+            .subscribe(historyData => {
+              this.historyDataComparison = historyData;
+              this.chartDataComparison = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
+                '# kills', '# losses', '# active players', false);
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+        }
         break;
       case 'Last90':
         this.aggregateService.getCorpHistoryForLast90Days(this.selectedCorp.corporationid)
@@ -99,6 +137,17 @@ export class HistoryDialogComponent implements OnInit {
             this.display = true;
             this.changeDetectorRef.markForCheck();
           });
+        if (this.comparisonCorp != null) {
+          this.aggregateService.getCorpHistoryForLast90Days(this.comparisonCorp.corporationid)
+            .first()
+            .subscribe(historyData => {
+              this.historyDataComparison = historyData;
+              this.chartDataComparison = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
+                '# kills', '# losses', '# active players', false);
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+        }
         break;
       default:
         break;
@@ -109,9 +158,17 @@ export class HistoryDialogComponent implements OnInit {
     if (this.selectedProfile.id === 'kd') {
       this.chartData = this.generateHistoryChartData(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
         '# kills', '# losses', '# active players', false);
+      if (this.comparisonCorp != null) {
+        this.chartDataComparison = this.generateHistoryChartData(this.historyDataComparison.kills, this.historyDataComparison.losses,
+          this.historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
+      }
     } else if (this.selectedProfile.id === 'isk') {
       this.chartData = this.generateHistoryChartData(this.historyData.iskwon, this.historyData.isklost, this.historyData.netisk,
         'b isk killed', 'b isk lost', 'net isk in b', true);
+      if (this.comparisonCorp != null) {
+        this.chartDataComparison = this.generateHistoryChartData(this.historyDataComparison.iskwon, this.historyDataComparison.isklost,
+          this.historyDataComparison.netisk, 'b isk killed', 'b isk lost', 'net isk in b', true);
+      }
     } else {
       this.chartData = null;
     }

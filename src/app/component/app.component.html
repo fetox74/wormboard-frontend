@@ -1,9 +1,10 @@
+<div id="hide-menu-animation"></div>
 <div class="header-wrapper">
   <div class="header">
     <h2>WormBoard</h2>v1.0
     <div class="year" (click)="onYearMenu($event)">
       {{selectedYear}}
-      <div class="yearmenu" [@menuState]="menuState">
+      <div class="yearmenu" [@menuState]="menuState" [style.margin-top]="menuHeight">
         <div class="yearmenuitem" *ngFor="let year of years" (click)="onSelectYear($event, [year])">{{year}}</div>
       </div>
     </div>
@@ -138,7 +139,7 @@
 <app-history-dialog [selectedCorp]="selectedCorp" [selectedYear]="selectedYear" [selectedPeriod]="selectedPeriod"></app-history-dialog>
 
 <p-dialog id="search" header="Search for corporation" [(visible)]="displaySearch" modal="modal" width="480" [contentStyle]="{'overflow':'visible'}">
-  <p-autoComplete [(ngModel)]="corporation" [suggestions]="filteredCorporations" (completeMethod)="filterCorporations($event)"></p-autoComplete>
+  <p-autoComplete [(ngModel)]="searchedCorp" [suggestions]="filteredCorporations" (completeMethod)="filterCorporations($event)"></p-autoComplete>
   <p-footer>
     <button type="button" pButton icon="fa-check" (click)="doSearch()" label="OK"></button>
   </p-footer>

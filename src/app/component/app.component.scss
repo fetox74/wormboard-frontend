@@ -8,7 +8,7 @@
   background-color: #59878c;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  margin: 0px;
+  margin: 8px 0 0 0;
   padding: 10px;
   color: white;
   display: inline-flex;
@@ -134,4 +134,12 @@ h2 {
 
 ::ng-deep.ui-autocomplete, ::ng-deep.ui-autocomplete-input {
   width: 100%;
+}
+
+#hide-menu-animation {
+  position: absolute;
+  height: 8px;
+  width: 90%;
+  background-color: white;
+  z-index: 3;
 }

@@ -2,7 +2,10 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {AutoCompleteModule, ButtonModule, ChartModule, ContextMenuModule, DataTableModule, DialogModule, DropdownModule, SharedModule} from 'primeng/primeng';
+import {
+  AutoCompleteModule, ButtonModule, ChartModule, CheckboxModule, ContextMenuModule, DataTableModule, DialogModule, DropdownModule,
+  SharedModule
+} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BootstrapSwitchModule} from 'angular2-bootstrap-switch';
 
@@ -36,6 +39,7 @@ import {TimezoneDialogComponent} from './component/dialog/timezone-dialog/timezo
     ContextMenuModule,
     DropdownModule,
     AutoCompleteModule,
+    CheckboxModule,
     ChartModule,
     OrderModule,
     BrowserAnimationsModule,

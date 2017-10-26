@@ -2,10 +2,24 @@
   border: none !important;
 }
 
+.chart-headline {
+  text-align: center;
+}
+
+#chart-headline-left {
+  float: left;
+  width: 50%;
+}
+
+#chart-headline-right {
+  float: right;
+  width: 50%;
+}
+
 p-footer {
   text-align: left;
 }
 
-.chart-headline {
-  text-align: center;
+.checkbox-single-chart {
+  margin-left: 40px;
 }

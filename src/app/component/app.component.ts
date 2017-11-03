@@ -6,6 +6,7 @@ import {DataTable, MenuItem, SelectItem} from 'primeng/primeng';
 import {HistoryDialogComponent} from './dialog/history-dialog/history-dialog.component';
 import {ActiveCharsDialogComponent} from './dialog/active-chars-dialog/active-chars-dialog.component';
 import {TimezoneDialogComponent} from './dialog/timezone-dialog/timezone-dialog.component';
+import {NotificationDialogComponent} from './dialog/notification-dialog/notification-dialog.component';
 
 export const monthNum = {
   'Jan': '01',
@@ -34,10 +35,10 @@ export const monthNum = {
   animations: [
     trigger('menuState', [
       state('invisible', style({
-        marginTop: '-55px' // todo: why does '*' not work???
+        top: '-55px'
       })),
       state('visible', style({
-        marginTop: '5px'
+        top: '*'
       })),
       transition('invisible => visible', animate('100ms ease-in')),
       transition('visible => invisible', animate('100ms ease-out'))
@@ -61,6 +62,9 @@ export class AppComponent implements OnInit {
   @ViewChild(ActiveCharsDialogComponent)
   private activeCharsDialog: ActiveCharsDialogComponent;
 
+  @ViewChild(NotificationDialogComponent)
+  private notificationDialog: NotificationDialogComponent;
+
   private contextMenuItems: MenuItem[];
   public selectedCorp: ZWBAggregateCorp;
 
@@ -78,7 +82,6 @@ export class AppComponent implements OnInit {
   public month: string[];
   public status = 'loading server status...';
   public menuState = 'invisible';
-  public menuHeight = '-55px';
 
   constructor(private aggregateService: AggregateService,
               private changeDetectorRef: ChangeDetectorRef) {
@@ -90,15 +93,15 @@ export class AppComponent implements OnInit {
         label: 'Info',
         icon: 'fa-info',
         items: [
-          {label: 'Timezone', icon: 'fa-clock-o', command: (event) => this.timezoneDialog.show()},
-          {label: 'Active players', icon: 'fa-user', command: (event) => this.activeCharsDialog.show()}
+          {label: 'Timezone', icon: 'fa-clock-o', command: (event) => this.onShowTimezoneDialog()},
+          {label: 'Active players', icon: 'fa-user', command: (event) => this.onShowActiveCharsDialog()}
         ]
       },
       {
         label: 'Graphs',
         icon: 'fa-area-chart',
         items: [
-          {label: 'History', icon: 'fa-bar-chart', command: (event) => this.historyDialog.show(null)},
+          {label: 'History', icon: 'fa-bar-chart', command: (event) => this.onShowHistoryDialog()},
           {label: 'Comparison', icon: 'fa-balance-scale', command: (event) => this.showSearch(true)}
         ]
       },
@@ -111,6 +114,7 @@ export class AppComponent implements OnInit {
         this.status = serverStatus.statusMessage;
         this.month = serverStatus.allMonth;
         this.years = this.getAllYearsFromMonth(serverStatus.allMonth);
+        this.years.push('ALL');
 
         this.selectedPeriod = 'ALL';
         this.selectedYear = this.years[0];
@@ -178,6 +182,7 @@ export class AppComponent implements OnInit {
             .subscribe(aggregates => {
               this.aggregates = aggregates;
               this.getServerStatus();
+              this.selectedYear = this.years[0];
           });
           break;
         default:
@@ -206,12 +211,21 @@ export class AppComponent implements OnInit {
       this.selectedYear = year;
       this.selectedPeriod = 'ALL';
 
-      this.aggregateService.getStatsForYear(this.selectedYear)
-        .first()
-        .subscribe(aggregates => {
-          this.aggregates = aggregates;
-          this.getServerStatus();
-      });
+      if (this.selectedYear === 'ALL') {
+        this.aggregateService.getStatsForAllTime()
+          .first()
+          .subscribe(aggregates => {
+            this.aggregates = aggregates;
+            this.getServerStatus();
+          });
+      } else {
+        this.aggregateService.getStatsForYear(this.selectedYear)
+          .first()
+          .subscribe(aggregates => {
+            this.aggregates = aggregates;
+            this.getServerStatus();
+          });
+      }
     }
 
     event.stopPropagation();
@@ -240,9 +254,37 @@ export class AppComponent implements OnInit {
     // this.changeDetectorRef.markForCheck();
   }
 
+  onShowTimezoneDialog() {
+    if (this.selectedYear === 'ALL') {
+      this.notificationDialog.show('Function not (yet) implemented for period ALL years, please change scope!');
+    } else {
+      this.timezoneDialog.show();
+    }
+  }
+
+  onShowActiveCharsDialog() {
+    if (this.selectedYear === 'ALL') {
+      this.notificationDialog.show('Function not (yet) implemented for period ALL years, please change scope!');
+    } else {
+      this.activeCharsDialog.show();
+    }
+  }
+
+  onShowHistoryDialog() {
+    if (this.selectedPeriod !== 'ALL') {
+      this.notificationDialog.show('Graphs not (yet) implemented for shorter periods than ALL, please change scope!');
+    } else {
+      this.historyDialog.show(null);
+    }
+  }
+
   showSearch(forComparison: boolean) {
-    this.displaySearch = true;
-    this.compareMode = forComparison;
+    if (this.selectedPeriod !== 'ALL') {
+      this.notificationDialog.show('Graphs not (yet) implemented for shorter periods than ALL, please change scope!');
+    } else {
+      this.displaySearch = true;
+      this.compareMode = forComparison;
+    }
   }
 
   doSearch() {
@@ -255,7 +297,13 @@ export class AppComponent implements OnInit {
           comparisonCorp = aggregate;
         }
       }
-      this.historyDialog.show(comparisonCorp);
+      if (!comparisonCorp) {
+        this.notificationDialog.show('Corporation to compare not found!');
+      } else if (this.selectedCorp === comparisonCorp) {
+        this.notificationDialog.show('Can\'t compare to the same corporation!');
+      } else {
+        this.historyDialog.show(comparisonCorp);
+      }
     } else {
       this.aggregates.sort((a, b) => (a[this.dataTable.sortField] - b[this.dataTable.sortField]) * this.dataTable.sortOrder);
 

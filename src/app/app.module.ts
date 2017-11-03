@@ -17,6 +17,7 @@ import {AboutDialogComponent} from './component/dialog/about-dialog/about-dialog
 import {LegalDialogComponent} from './component/dialog/legal-dialog/legal-dialog.component';
 import {ActiveCharsDialogComponent} from './component/dialog/active-chars-dialog/active-chars-dialog.component';
 import {TimezoneDialogComponent} from './component/dialog/timezone-dialog/timezone-dialog.component';
+import { NotificationDialogComponent } from './component/dialog/notification-dialog/notification-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {TimezoneDialogComponent} from './component/dialog/timezone-dialog/timezo
     AboutDialogComponent,
     LegalDialogComponent,
     ActiveCharsDialogComponent,
-    TimezoneDialogComponent
+    TimezoneDialogComponent,
+    NotificationDialogComponent
   ],
   imports: [
     BrowserModule,

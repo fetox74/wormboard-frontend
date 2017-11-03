@@ -18,6 +18,8 @@
 }
 
 .year {
+  width: 36px;
+  text-align: center;
   padding: 5px 10px;
   top: 10px;
   position: relative;
@@ -27,7 +29,7 @@
   border-top-right-radius: 10px;
 }
 
-.yearmenu {
+.year-menu {
   position: absolute;
   margin-top: 5px;
   z-index: -1;
@@ -38,7 +40,10 @@
   border-bottom-right-radius: 10px;
 }
 
-.yearmenuitem:hover {
+.year-menu-content {
+}
+
+.year-menu-item:hover {
   color: #7d9394;
 }
 

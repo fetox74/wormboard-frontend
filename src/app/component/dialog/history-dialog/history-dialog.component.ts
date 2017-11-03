@@ -21,6 +21,7 @@ export class HistoryDialogComponent implements OnInit {
   public historyDataComparison: any;
   public chartDataComparison: any;
   public chartDataCombined: any;
+  public options: any;
 
   public profiles: SelectItem[];
   public selectedProfile: any;
@@ -36,138 +37,175 @@ export class HistoryDialogComponent implements OnInit {
   public selectedYear: string;
 
   constructor(private aggregateService: AggregateService,
-              private changeDetectorRef: ChangeDetectorRef) { }
+              private changeDetectorRef: ChangeDetectorRef) {
+  }
 
   ngOnInit() {
     this.profiles = [];
     this.profiles.push({label: 'Kills / losses + active chars', value: {id: 'kd'}});
     this.profiles.push({label: 'ISK won / lost + net ISK', value: {id: 'isk'}});
+
+    this.options = {
+      scales: {
+        xAxes: [{
+          ticks: {
+            autoSkip: false
+          }
+        }]
+      }
+    };
   }
 
   public show(comparisonCorp: ZWBAggregateCorp) {
     this.comparisonCorp = comparisonCorp;
     this.selectedProfile = this.profiles[0].value;
 
-    switch (this.selectedPeriod) {
-      case 'ALL':
-        this.aggregateService.getCorpHistoryForYear(this.selectedCorp.corporationid, this.selectedYear)
-          .first()
-          .subscribe(historyData => {
-            this.historyData = historyData;
-            this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
-              '# kills', '# losses', '# active players', false);
-            if (this.comparisonCorp != null) {
-              this.aggregateService.getCorpHistoryForYear(this.comparisonCorp.corporationid, this.selectedYear)
-                .first()
-                .subscribe(historyDataComparison => {
-                  this.historyDataComparison = historyDataComparison;
-                  this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
-                    historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
-                  this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
-                    historyDataComparison.kills, historyDataComparison.losses, historyDataComparison.numactive, '# kills', '# losses',
-                    '# active players', false);
-                  this.display = true;
-                  this.changeDetectorRef.markForCheck();
-                });
-            }
-            this.display = true;
-            this.changeDetectorRef.markForCheck();
-          });
-        break;
-      case 'Jan':
-      case 'Feb':
-      case 'Mar':
-      case 'Apr':
-      case 'May':
-      case 'Jun':
-      case 'Jul':
-      case 'Aug':
-      case 'Sep':
-      case 'Oct':
-      case 'Nov':
-      case 'Dec':
-        this.aggregateService.getCorpHistoryForMonth(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
-          .first()
-          .subscribe(historyData => {
-            this.historyData = historyData;
-            this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
-              '# kills', '# losses', '# active players', false);
-            this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
-              historyData.kills, historyData.losses, historyData.numactive, '# kills', '# losses', '# active players',
-              false);
-            if (this.comparisonCorp != null) {
-              this.aggregateService.getCorpHistoryForMonth(this.comparisonCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
-                .first()
-                .subscribe(historyDataComparison => {
-                  this.historyDataComparison = historyDataComparison;
-                  this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
-                    historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
-                  this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
-                    historyDataComparison.kills, historyDataComparison.losses, historyDataComparison.numactive, '# kills', '# losses',
-                    '# active players', false);
-                  this.display = true;
-                  this.changeDetectorRef.markForCheck();
-                });
-            }
-            this.display = true;
-            this.changeDetectorRef.markForCheck();
-          });
-        break;
-      case 'Q1':
-      case 'Q2':
-      case 'Q3':
-      case 'Q4':
-        this.aggregateService.getCorpHistoryForQuarter(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
-          .first()
-          .subscribe(historyData => {
-            this.historyData = historyData;
-            this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
-              '# kills', '# losses', '# active players', false);
-            if (this.comparisonCorp != null) {
-              this.aggregateService.getCorpHistoryForQuarter(this.comparisonCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
-                .first()
-                .subscribe(historyDataComparison => {
-                  this.historyDataComparison = historyDataComparison;
-                  this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
-                    historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
-                  this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
-                    historyDataComparison.kills, historyDataComparison.losses, historyDataComparison.numactive, '# kills', '# losses',
-                    '# active players', false);
-                  this.display = true;
-                  this.changeDetectorRef.markForCheck();
-                });
-            }
-            this.display = true;
-            this.changeDetectorRef.markForCheck();
-          });
-        break;
-      case 'Last90':
-        this.aggregateService.getCorpHistoryForLast90Days(this.selectedCorp.corporationid)
-          .first()
-          .subscribe(historyData => {
-            this.historyData = historyData;
-            this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
-              '# kills', '# losses', '# active players', false);
-            if (this.comparisonCorp != null) {
-              this.aggregateService.getCorpHistoryForLast90Days(this.comparisonCorp.corporationid)
-                .first()
-                .subscribe(historyDataComparison => {
-                  this.historyDataComparison = historyDataComparison;
-                  this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
-                    historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
-                  this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
-                    historyDataComparison.kills, historyDataComparison.losses, historyDataComparison.numactive, '# kills', '# losses',
-                    '# active players', false);
-                  this.display = true;
-                  this.changeDetectorRef.markForCheck();
-                });
-            }
-            this.display = true;
-            this.changeDetectorRef.markForCheck();
-          });
-        break;
-      default:
-        break;
+    if (this.selectedYear === 'ALL') {
+      this.aggregateService.getCorpHistoryForAllTime(this.selectedCorp.corporationid)
+        .first()
+        .subscribe(historyData => {
+          this.historyData = historyData;
+          this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
+            '# kills', '# losses', '# active players', false);
+          if (this.comparisonCorp != null) {
+            this.aggregateService.getCorpHistoryForAllTime(this.comparisonCorp.corporationid)
+              .first()
+              .subscribe(historyDataComparison => {
+                this.historyDataComparison = historyDataComparison;
+                this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
+                  historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
+                this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
+                  historyDataComparison.kills, historyDataComparison.losses, historyDataComparison.numactive, '# kills', '# losses',
+                  '# active players', false);
+                this.display = true;
+                this.changeDetectorRef.markForCheck();
+              });
+          }
+          this.display = true;
+          this.changeDetectorRef.markForCheck();
+        });
+    } else {
+      switch (this.selectedPeriod) {
+        case 'ALL':
+          this.aggregateService.getCorpHistoryForYear(this.selectedCorp.corporationid, this.selectedYear)
+            .first()
+            .subscribe(historyData => {
+              this.historyData = historyData;
+              this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
+                '# kills', '# losses', '# active players', false);
+              if (this.comparisonCorp != null) {
+                this.aggregateService.getCorpHistoryForYear(this.comparisonCorp.corporationid, this.selectedYear)
+                  .first()
+                  .subscribe(historyDataComparison => {
+                    this.historyDataComparison = historyDataComparison;
+                    this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
+                      historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
+                    this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
+                      historyDataComparison.kills, historyDataComparison.losses, historyDataComparison.numactive, '# kills', '# losses',
+                      '# active players', false);
+                    this.display = true;
+                    this.changeDetectorRef.markForCheck();
+                  });
+              }
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+          break;
+        case 'Jan':
+        case 'Feb':
+        case 'Mar':
+        case 'Apr':
+        case 'May':
+        case 'Jun':
+        case 'Jul':
+        case 'Aug':
+        case 'Sep':
+        case 'Oct':
+        case 'Nov':
+        case 'Dec':
+          this.aggregateService.getCorpHistoryForMonth(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
+            .first()
+            .subscribe(historyData => {
+              this.historyData = historyData;
+              this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
+                '# kills', '# losses', '# active players', false);
+              this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
+                historyData.kills, historyData.losses, historyData.numactive, '# kills', '# losses', '# active players',
+                false);
+              if (this.comparisonCorp != null) {
+                this.aggregateService.getCorpHistoryForMonth(this.comparisonCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
+                  .first()
+                  .subscribe(historyDataComparison => {
+                    this.historyDataComparison = historyDataComparison;
+                    this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
+                      historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
+                    this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
+                      historyDataComparison.kills, historyDataComparison.losses, historyDataComparison.numactive, '# kills', '# losses',
+                      '# active players', false);
+                    this.display = true;
+                    this.changeDetectorRef.markForCheck();
+                  });
+              }
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+          break;
+        case 'Q1':
+        case 'Q2':
+        case 'Q3':
+        case 'Q4':
+          this.aggregateService.getCorpHistoryForQuarter(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
+            .first()
+            .subscribe(historyData => {
+              this.historyData = historyData;
+              this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
+                '# kills', '# losses', '# active players', false);
+              if (this.comparisonCorp != null) {
+                this.aggregateService.getCorpHistoryForQuarter(this.comparisonCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
+                  .first()
+                  .subscribe(historyDataComparison => {
+                    this.historyDataComparison = historyDataComparison;
+                    this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
+                      historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
+                    this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
+                      historyDataComparison.kills, historyDataComparison.losses, historyDataComparison.numactive, '# kills', '# losses',
+                      '# active players', false);
+                    this.display = true;
+                    this.changeDetectorRef.markForCheck();
+                  });
+              }
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+          break;
+        case 'Last90':
+          this.aggregateService.getCorpHistoryForLast90Days(this.selectedCorp.corporationid)
+            .first()
+            .subscribe(historyData => {
+              this.historyData = historyData;
+              this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
+                '# kills', '# losses', '# active players', false);
+              if (this.comparisonCorp != null) {
+                this.aggregateService.getCorpHistoryForLast90Days(this.comparisonCorp.corporationid)
+                  .first()
+                  .subscribe(historyDataComparison => {
+                    this.historyDataComparison = historyDataComparison;
+                    this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
+                      historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
+                    this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
+                      historyDataComparison.kills, historyDataComparison.losses, historyDataComparison.numactive, '# kills', '# losses',
+                      '# active players', false);
+                    this.display = true;
+                    this.changeDetectorRef.markForCheck();
+                  });
+              }
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -198,10 +236,14 @@ export class HistoryDialogComponent implements OnInit {
   }
 
   private generateHistoryChartData(positive: number[], negative: number[], additional: number[], positivelabel: string, negativelabel: string,
-                                    additionallabel: string, additionaldash: boolean): any {
+                                   additionallabel: string, additionaldash: boolean): any {
     return {
-      labels: ['1. Jan', '15. Jan', '1. Feb', '15. Feb', '1. Mar', '15. Mar', '1. Apr', '15. Apr', '1. May', '15. May', '1. Jun', '15. Jun',
-        '1. Jul', '15. Jul', '1. Aug', '15. Aug', '1. Sep', '15. Sep', '1. Oct', '15. Oct', '1. Nov', '15. Nov', '1. Dec', '15. Dec'],
+      labels: this.selectedYear === 'ALL' ?
+        ['Jan 2015', 'Feb 2015', 'Mar 2015', 'Apr 2015', 'May 2015', 'Jun 2015', 'Jul 2015', 'Aug 2015', 'Sep 2015', 'Oct 2015', 'Nov 2015', 'Dec 2015',
+          'Jan 2016', 'Feb 2016', 'Mar 2016', 'Apr 2016', 'May 2016', 'Jun 2016', 'Jul 2016', 'Aug 2016', 'Sep 2016', 'Oct 2016', 'Nov 2016', 'Dec 2016',
+          'Jan 2017', 'Feb 2017', 'Mar 2017', 'Apr 2017', 'May 2017', 'Jun 2017', 'Jul 2017', 'Aug 2017', 'Sep 2017', 'Oct 2017', 'Nov 2017', 'Dec 2017'] :
+        ['1. Jan', '15. Jan', '1. Feb', '15. Feb', '1. Mar', '15. Mar', '1. Apr', '15. Apr', '1. May', '15. May', '1. Jun', '15. Jun', '1. Jul', '15. Jul',
+          '1. Aug', '15. Aug', '1. Sep', '15. Sep', '1. Oct', '15. Oct', '1. Nov', '15. Nov', '1. Dec', '15. Dec'],
       marginLeft: 60,
       datasets: [
         {
@@ -231,8 +273,12 @@ export class HistoryDialogComponent implements OnInit {
                                            additionalB: number[], positivelabel: string, negativelabel: string, additionallabel: string,
                                            additionaldash: boolean): any {
     return {
-      labels: ['1. Jan', '15. Jan', '1. Feb', '15. Feb', '1. Mar', '15. Mar', '1. Apr', '15. Apr', '1. May', '15. May', '1. Jun', '15. Jun',
-        '1. Jul', '15. Jul', '1. Aug', '15. Aug', '1. Sep', '15. Sep', '1. Oct', '15. Oct', '1. Nov', '15. Nov', '1. Dec', '15. Dec'],
+      labels: this.selectedYear === 'ALL' ?
+        ['Jan 2015', 'Feb 2015', 'Mar 2015', 'Apr 2015', 'May 2015', 'Jun 2015', 'Jul 2015', 'Aug 2015', 'Sep 2015', 'Oct 2015', 'Nov 2015', 'Dec 2015',
+          'Jan 2016', 'Feb 2016', 'Mar 2016', 'Apr 2016', 'May 2016', 'Jun 2016', 'Jul 2016', 'Aug 2016', 'Sep 2016', 'Oct 2016', 'Nov 2016', 'Dec 2016',
+          'Jan 2017', 'Feb 2017', 'Mar 2017', 'Apr 2017', 'May 2017', 'Jun 2017', 'Jul 2017', 'Aug 2017', 'Sep 2017', 'Oct 2017', 'Nov 2017', 'Dec 2017'] :
+        ['1. Jan', '15. Jan', '1. Feb', '15. Feb', '1. Mar', '15. Mar', '1. Apr', '15. Apr', '1. May', '15. May', '1. Jun', '15. Jun', '1. Jul', '15. Jul',
+          '1. Aug', '15. Aug', '1. Sep', '15. Sep', '1. Oct', '15. Oct', '1. Nov', '15. Nov', '1. Dec', '15. Dec'],
       marginLeft: 60,
       datasets: [
         {

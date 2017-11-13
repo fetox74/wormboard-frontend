@@ -35,10 +35,10 @@ export const monthNum = {
   animations: [
     trigger('menuState', [
       state('invisible', style({
-        top: '-55px'
+        transform: 'translateY(calc(-100% + 8px))'
       })),
       state('visible', style({
-        top: '*'
+        transform: 'translateY(0)'
       })),
       transition('invisible => visible', animate('100ms ease-in')),
       transition('visible => invisible', animate('100ms ease-out'))

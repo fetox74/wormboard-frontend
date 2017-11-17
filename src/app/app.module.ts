@@ -19,6 +19,7 @@ import {ActiveCharsDialogComponent} from './component/dialog/active-chars-dialog
 import {TimezoneDialogComponent} from './component/dialog/timezone-dialog/timezone-dialog.component';
 import { NotificationDialogComponent } from './component/dialog/notification-dialog/notification-dialog.component';
 import { DayOfTheWeekDialogComponent } from './component/dialog/day-of-the-week-dialog/day-of-the-week-dialog.component';
+import { ImpactDialogComponent } from './component/dialog/impact-dialog/impact-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { DayOfTheWeekDialogComponent } from './component/dialog/day-of-the-week-
     ActiveCharsDialogComponent,
     TimezoneDialogComponent,
     NotificationDialogComponent,
-    DayOfTheWeekDialogComponent
+    DayOfTheWeekDialogComponent,
+    ImpactDialogComponent
   ],
   imports: [
     BrowserModule,

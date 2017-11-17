@@ -8,6 +8,7 @@ import {ActiveCharsDialogComponent} from './dialog/active-chars-dialog/active-ch
 import {TimezoneDialogComponent} from './dialog/timezone-dialog/timezone-dialog.component';
 import {NotificationDialogComponent} from './dialog/notification-dialog/notification-dialog.component';
 import {DayOfTheWeekDialogComponent} from './dialog/day-of-the-week-dialog/day-of-the-week-dialog.component';
+import {ImpactDialogComponent} from './dialog/impact-dialog/impact-dialog.component';
 
 export const monthNum = {
   'Jan': '01',
@@ -66,6 +67,9 @@ export class AppComponent implements OnInit {
   @ViewChild(DayOfTheWeekDialogComponent)
   private dayOfTheWeekDialog: DayOfTheWeekDialogComponent;
 
+  @ViewChild(ImpactDialogComponent)
+  private impactDialog: ImpactDialogComponent;
+
   @ViewChild(NotificationDialogComponent)
   private notificationDialog: NotificationDialogComponent;
 
@@ -103,11 +107,12 @@ export class AppComponent implements OnInit {
         ]
       },
       {
-        label: 'Graphs',
+        label: 'Charts',
         icon: 'fa-area-chart',
         items: [
           {label: 'History', icon: 'fa-bar-chart', command: (event) => this.onShowHistoryDialog()},
-          {label: 'Comparison', icon: 'fa-balance-scale', command: (event) => this.showSearch(true)}
+          {label: 'Comparison', icon: 'fa-balance-scale', command: (event) => this.showSearch(true)},
+          {label: 'Impact', icon: 'fa-pie-chart', command: (event) => this.onShowImpactDialog()}
         ]
       },
       {label: 'Search', icon: 'fa-search', command: (event) => this.showSearch(false)}
@@ -288,6 +293,14 @@ export class AppComponent implements OnInit {
       this.notificationDialog.show('Graphs not (yet) implemented for shorter periods than ALL, please change scope!');
     } else {
       this.historyDialog.show(null);
+    }
+  }
+
+  onShowImpactDialog() {
+    if (this.selectedPeriod !== 'ALL') {
+      this.notificationDialog.show('Graphs not (yet) implemented for shorter periods than ALL, please change scope!');
+    } else {
+      this.impactDialog.show();
     }
   }
 

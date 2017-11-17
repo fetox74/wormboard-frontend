@@ -1,0 +1,12 @@
+.ui-widget-content {
+  border: none !important;
+}
+
+p-footer {
+  text-align: left;
+}
+
+.checkbox-ustz {
+  margin-top: 12px;
+  position: absolute;
+}

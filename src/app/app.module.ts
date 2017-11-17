@@ -18,6 +18,7 @@ import {LegalDialogComponent} from './component/dialog/legal-dialog/legal-dialog
 import {ActiveCharsDialogComponent} from './component/dialog/active-chars-dialog/active-chars-dialog.component';
 import {TimezoneDialogComponent} from './component/dialog/timezone-dialog/timezone-dialog.component';
 import { NotificationDialogComponent } from './component/dialog/notification-dialog/notification-dialog.component';
+import { DayOfTheWeekDialogComponent } from './component/dialog/day-of-the-week-dialog/day-of-the-week-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { NotificationDialogComponent } from './component/dialog/notification-dia
     LegalDialogComponent,
     ActiveCharsDialogComponent,
     TimezoneDialogComponent,
-    NotificationDialogComponent
+    NotificationDialogComponent,
+    DayOfTheWeekDialogComponent
   ],
   imports: [
     BrowserModule,

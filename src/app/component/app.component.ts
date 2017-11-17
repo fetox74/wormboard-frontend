@@ -7,6 +7,7 @@ import {HistoryDialogComponent} from './dialog/history-dialog/history-dialog.com
 import {ActiveCharsDialogComponent} from './dialog/active-chars-dialog/active-chars-dialog.component';
 import {TimezoneDialogComponent} from './dialog/timezone-dialog/timezone-dialog.component';
 import {NotificationDialogComponent} from './dialog/notification-dialog/notification-dialog.component';
+import {DayOfTheWeekDialogComponent} from './dialog/day-of-the-week-dialog/day-of-the-week-dialog.component';
 
 export const monthNum = {
   'Jan': '01',
@@ -62,6 +63,9 @@ export class AppComponent implements OnInit {
   @ViewChild(ActiveCharsDialogComponent)
   private activeCharsDialog: ActiveCharsDialogComponent;
 
+  @ViewChild(DayOfTheWeekDialogComponent)
+  private dayOfTheWeekDialog: DayOfTheWeekDialogComponent;
+
   @ViewChild(NotificationDialogComponent)
   private notificationDialog: NotificationDialogComponent;
 
@@ -94,6 +98,7 @@ export class AppComponent implements OnInit {
         icon: 'fa-info',
         items: [
           {label: 'Timezone', icon: 'fa-clock-o', command: (event) => this.onShowTimezoneDialog()},
+          {label: 'Day of the week', icon: 'fa-calendar', command: (event) => this.onShowDayOfTheWeekDialog()},
           {label: 'Active players', icon: 'fa-user', command: (event) => this.onShowActiveCharsDialog()}
         ]
       },
@@ -267,6 +272,14 @@ export class AppComponent implements OnInit {
       this.notificationDialog.show('Function not (yet) implemented for period ALL years, please change scope!');
     } else {
       this.activeCharsDialog.show();
+    }
+  }
+
+  onShowDayOfTheWeekDialog() {
+    if (this.selectedYear === 'ALL') {
+      this.notificationDialog.show('Function not (yet) implemented for period ALL years, please change scope!');
+    } else {
+      this.dayOfTheWeekDialog.show();
     }
   }
 

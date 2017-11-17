@@ -1,0 +1,10 @@
+<p-dialog header="Weekday activity of {{selectedCorp?.corporation}}" [(visible)]="display" modal="modal" width="500" height="655"
+          positionTop="140" [contentStyle]="{'overflow':'visible'}" minHeight="655">
+  <p-chart type="radar" [data]="data" [width]="'500px'" [height]="'540px'"></p-chart>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <p-checkbox class="checkbox-ustz" label="USTZ correction" [(ngModel)]="usTZcorrection" binary="true"></p-checkbox>
+      <button type="button" pButton icon="fa-check" (click)="display=false" label="OK"></button>
+    </div>
+  </p-footer>
+</p-dialog>

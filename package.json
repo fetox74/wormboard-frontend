@@ -26,6 +26,7 @@
     "chart.js": "^2.7.1",
     "core-js": "^2.5.1",
     "font-awesome": "^4.7.0",
+    "lodash": "^4.17.4",
     "ngx-order-pipe": "^1.1.0",
     "primeng": "^4.3.0",
     "rxjs": "^5.5.2",

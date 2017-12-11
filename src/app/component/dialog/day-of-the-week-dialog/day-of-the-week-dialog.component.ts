@@ -1,6 +1,7 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {AggregateService} from '../../../service/aggregate.service';
 import {ZWBAggregateCorp} from '../../../model/zwb-aggregate-corp';
+import {monthNum} from '../../app.component';
 
 @Component({
   selector: 'app-day-of-the-week-dialog',
@@ -10,17 +11,84 @@ import {ZWBAggregateCorp} from '../../../model/zwb-aggregate-corp';
 export class DayOfTheWeekDialogComponent implements OnInit {
   public display = false;
 
-  public data: any;
   public usTZcorrection = false;
+
+  public chartData: any;
 
   @Input()
   public selectedCorp: ZWBAggregateCorp;
+
+  @Input()
+  public selectedPeriod: string;
+
+  @Input()
+  public selectedYear: string;
 
   constructor(private aggregateService: AggregateService,
               private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.data = {
+  }
+
+  show() {
+    switch (this.selectedPeriod) {
+      case 'ALL':
+        this.aggregateService.getWeekdayCorpStatsForYear(this.selectedCorp.corporationid, this.selectedYear)
+          .first()
+          .subscribe(aggregate => {
+            this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
+            this.display = true;
+            this.changeDetectorRef.markForCheck();
+          });
+        break;
+      case 'Jan':
+      case 'Feb':
+      case 'Mar':
+      case 'Apr':
+      case 'May':
+      case 'Jun':
+      case 'Jul':
+      case 'Aug':
+      case 'Sep':
+      case 'Oct':
+      case 'Nov':
+      case 'Dec':
+        this.aggregateService.getWeekdayCorpStatsForMonth(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
+          .first()
+          .subscribe(aggregate => {
+            this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
+            this.display = true;
+            this.changeDetectorRef.markForCheck();
+          });
+        break;
+      case 'Q1':
+      case 'Q2':
+      case 'Q3':
+      case 'Q4':
+        this.aggregateService.getWeekdayCorpStatsForQuarter(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
+          .first()
+          .subscribe(aggregate => {
+            this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
+            this.display = true;
+            this.changeDetectorRef.markForCheck();
+          });
+        break;
+      case 'Last90':
+        this.aggregateService.getWeekdayCorpStatsForLast90Days(this.selectedCorp.corporationid)
+          .first()
+          .subscribe(aggregate => {
+            this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
+            this.display = true;
+            this.changeDetectorRef.markForCheck();
+          });
+        break;
+      default:
+        break;
+    }
+  }
+
+  generateChartData(kills: number[], aggressors: number[]): any {
+    return {
       labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       datasets: [
         {
@@ -31,23 +99,19 @@ export class DayOfTheWeekDialogComponent implements OnInit {
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
           pointHoverBorderColor: '#53A69B',
-          data: [65, 59, 90, 81, 56, 55, 40]
+          data: kills
         },
         {
-          label: 'ISK in b',
+          label: 'ø / kill',
           backgroundColor: 'rgba(89, 135, 140, 0.5)',
           borderColor: '#4f777b',
           pointBackgroundColor: 'rgba(89, 135, 140, 0.5)',
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
           pointHoverBorderColor: '#4f777b',
-          data: [28, 48, 40, 19, 96, 27, 100]
+          data: aggressors
         }
       ]
     };
-  }
-
-  public show() {
-    this.display = true;
   }
 }

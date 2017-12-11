@@ -13,3 +13,8 @@ tr:hover {
 .ui-datatable-resizable {
   padding-bottom: 0px !important;
 }
+
+.loader {
+  background: #666666 !important;
+  opacity: .50 !important;
+}

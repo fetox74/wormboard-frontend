@@ -27,9 +27,11 @@
     "core-js": "^2.5.1",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",
+    "ng2-loading-animate": "0.0.17",
     "ngx-order-pipe": "^1.1.0",
     "primeng": "^4.3.0",
     "rxjs": "^5.5.2",
+    "web-animations-js": "^2.3.1",
     "zone.js": "^0.8.18"
   },
   "devDependencies": {

@@ -239,11 +239,14 @@ export class HistoryDialogComponent implements OnInit {
                                    additionallabel: string, additionaldash: boolean): any {
     return {
       labels: this.selectedYear === 'ALL' ?
-        ['Jan 2015', 'Feb 2015', 'Mar 2015', 'Apr 2015', 'May 2015', 'Jun 2015', 'Jul 2015', 'Aug 2015', 'Sep 2015', 'Oct 2015', 'Nov 2015', 'Dec 2015',
-          'Jan 2016', 'Feb 2016', 'Mar 2016', 'Apr 2016', 'May 2016', 'Jun 2016', 'Jul 2016', 'Aug 2016', 'Sep 2016', 'Oct 2016', 'Nov 2016', 'Dec 2016',
-          'Jan 2017', 'Feb 2017', 'Mar 2017', 'Apr 2017', 'May 2017', 'Jun 2017', 'Jul 2017', 'Aug 2017', 'Sep 2017', 'Oct 2017', 'Nov 2017', 'Dec 2017'] :
+        ['Jan/Feb \'12', 'Mar/Apr \'12', 'May/Jun \'12', 'Jul/Aug \'12', 'Sep/Oct \'12', 'Nov/Dec \'12',
+         'Jan/Feb \'13', 'Mar/Apr \'13', 'May/Jun \'13', 'Jul/Aug \'13', 'Sep/Oct \'13', 'Nov/Dec \'13',
+         'Jan/Feb \'14', 'Mar/Apr \'14', 'May/Jun \'14', 'Jul/Aug \'14', 'Sep/Oct \'14', 'Nov/Dec \'14',
+         'Jan/Feb \'15', 'Mar/Apr \'15', 'May/Jun \'15', 'Jul/Aug \'15', 'Sep/Oct \'15', 'Nov/Dec \'15',
+         'Jan/Feb \'16', 'Mar/Apr \'16', 'May/Jun \'16', 'Jul/Aug \'16', 'Sep/Oct \'16', 'Nov/Dec \'16',
+         'Jan/Feb \'17', 'Mar/Apr \'17', 'May/Jun \'17', 'Jul/Aug \'17', 'Sep/Oct \'17', 'Nov/Dec \'17'] :
         ['1. Jan', '15. Jan', '1. Feb', '15. Feb', '1. Mar', '15. Mar', '1. Apr', '15. Apr', '1. May', '15. May', '1. Jun', '15. Jun', '1. Jul', '15. Jul',
-          '1. Aug', '15. Aug', '1. Sep', '15. Sep', '1. Oct', '15. Oct', '1. Nov', '15. Nov', '1. Dec', '15. Dec'],
+         '1. Aug', '15. Aug', '1. Sep', '15. Sep', '1. Oct', '15. Oct', '1. Nov', '15. Nov', '1. Dec', '15. Dec'],
       marginLeft: 60,
       datasets: [
         {
@@ -274,11 +277,14 @@ export class HistoryDialogComponent implements OnInit {
                                            additionaldash: boolean): any {
     return {
       labels: this.selectedYear === 'ALL' ?
-        ['Jan 2015', 'Feb 2015', 'Mar 2015', 'Apr 2015', 'May 2015', 'Jun 2015', 'Jul 2015', 'Aug 2015', 'Sep 2015', 'Oct 2015', 'Nov 2015', 'Dec 2015',
-          'Jan 2016', 'Feb 2016', 'Mar 2016', 'Apr 2016', 'May 2016', 'Jun 2016', 'Jul 2016', 'Aug 2016', 'Sep 2016', 'Oct 2016', 'Nov 2016', 'Dec 2016',
-          'Jan 2017', 'Feb 2017', 'Mar 2017', 'Apr 2017', 'May 2017', 'Jun 2017', 'Jul 2017', 'Aug 2017', 'Sep 2017', 'Oct 2017', 'Nov 2017', 'Dec 2017'] :
+        ['Jan/Feb \'12', 'Mar/Apr \'12', 'May/Jun \'12', 'Jul/Aug \'12', 'Sep/Oct \'12', 'Nov/Dec \'12',
+         'Jan/Feb \'13', 'Mar/Apr \'13', 'May/Jun \'13', 'Jul/Aug \'13', 'Sep/Oct \'13', 'Nov/Dec \'13',
+         'Jan/Feb \'14', 'Mar/Apr \'14', 'May/Jun \'14', 'Jul/Aug \'14', 'Sep/Oct \'14', 'Nov/Dec \'14',
+         'Jan/Feb \'15', 'Mar/Apr \'15', 'May/Jun \'15', 'Jul/Aug \'15', 'Sep/Oct \'15', 'Nov/Dec \'15',
+         'Jan/Feb \'16', 'Mar/Apr \'16', 'May/Jun \'16', 'Jul/Aug \'16', 'Sep/Oct \'16', 'Nov/Dec \'16',
+         'Jan/Feb \'17', 'Mar/Apr \'17', 'May/Jun \'17', 'Jul/Aug \'17', 'Sep/Oct \'17', 'Nov/Dec \'17'] :
         ['1. Jan', '15. Jan', '1. Feb', '15. Feb', '1. Mar', '15. Mar', '1. Apr', '15. Apr', '1. May', '15. May', '1. Jun', '15. Jun', '1. Jul', '15. Jul',
-          '1. Aug', '15. Aug', '1. Sep', '15. Sep', '1. Oct', '15. Oct', '1. Nov', '15. Nov', '1. Dec', '15. Dec'],
+         '1. Aug', '15. Aug', '1. Sep', '15. Sep', '1. Oct', '15. Oct', '1. Nov', '15. Nov', '1. Dec', '15. Dec'],
       marginLeft: 60,
       datasets: [
         {

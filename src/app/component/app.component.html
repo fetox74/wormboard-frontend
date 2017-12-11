@@ -1,3 +1,4 @@
+<loading-animate></loading-animate>
 <div id="hide-menu-animation"></div>
 <div class="header-wrapper">
   <div class="header">
@@ -139,8 +140,8 @@
 <app-timezone-dialog [selectedCorp]="selectedCorp" [selectedYear]="selectedYear" [selectedPeriod]="selectedPeriod"></app-timezone-dialog>
 <app-active-chars-dialog [selectedCorp]="selectedCorp" [selectedYear]="selectedYear" [selectedPeriod]="selectedPeriod"></app-active-chars-dialog>
 <app-history-dialog [selectedCorp]="selectedCorp" [selectedYear]="selectedYear" [selectedPeriod]="selectedPeriod"></app-history-dialog>
-<app-day-of-the-week-dialog [selectedCorp]="selectedCorp"></app-day-of-the-week-dialog>
-<app-impact-dialog [selectedCorp]="selectedCorp"></app-impact-dialog>
+<app-day-of-the-week-dialog [selectedCorp]="selectedCorp" [selectedYear]="selectedYear" [selectedPeriod]="selectedPeriod"></app-day-of-the-week-dialog>
+<app-impact-dialog [aggregates]="aggregates" [selectedCorp]="selectedCorp"></app-impact-dialog>
 
 <app-notification-dialog></app-notification-dialog>
 

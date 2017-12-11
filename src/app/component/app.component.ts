@@ -2,13 +2,14 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnIni
 import {AggregateService} from '../service/aggregate.service';
 import {ZWBAggregateCorp} from '../model/zwb-aggregate-corp';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {DataTable, MenuItem, SelectItem} from 'primeng/primeng';
+import {DataTable, MenuItem} from 'primeng/primeng';
 import {HistoryDialogComponent} from './dialog/history-dialog/history-dialog.component';
 import {ActiveCharsDialogComponent} from './dialog/active-chars-dialog/active-chars-dialog.component';
 import {TimezoneDialogComponent} from './dialog/timezone-dialog/timezone-dialog.component';
 import {NotificationDialogComponent} from './dialog/notification-dialog/notification-dialog.component';
 import {DayOfTheWeekDialogComponent} from './dialog/day-of-the-week-dialog/day-of-the-week-dialog.component';
 import {ImpactDialogComponent} from './dialog/impact-dialog/impact-dialog.component';
+import {LoadingAnimateService} from 'ng2-loading-animate/src/ng2-loading-animate.service';
 
 export const monthNum = {
   'Jan': '01',
@@ -37,7 +38,7 @@ export const monthNum = {
   animations: [
     trigger('menuState', [
       state('invisible', style({
-        transform: 'translateY(calc(-100% + 8px))'
+        transform: 'translateY(calc(-100% + 7px))'
       })),
       state('visible', style({
         transform: 'translateY(0)'
@@ -92,7 +93,8 @@ export class AppComponent implements OnInit {
   public menuState = 'invisible';
 
   constructor(private aggregateService: AggregateService,
-              private changeDetectorRef: ChangeDetectorRef) {
+              private changeDetectorRef: ChangeDetectorRef,
+              private loadingAnimateService: LoadingAnimateService) {
   }
 
   ngOnInit() {
@@ -118,6 +120,7 @@ export class AppComponent implements OnInit {
       {label: 'Search', icon: 'fa-search', command: (event) => this.showSearch(false)}
     ];
 
+    this.loadingAnimateService.setValue(true);
     this.aggregateService.getServerStatus()
       .first()
       .subscribe(serverStatus => {
@@ -133,6 +136,7 @@ export class AppComponent implements OnInit {
           .subscribe(aggregates => {
             this.aggregates = aggregates;
             this.changeDetectorRef.markForCheck();
+            this.loadingAnimateService.setValue(false);
         });
     });
 
@@ -146,6 +150,7 @@ export class AppComponent implements OnInit {
   onSelect(period: string) {
     if (period !== this.selectedPeriod &&
        (period === 'ALL' || period === 'Last90' || this.month.some(e => e === this.selectedYear + monthNum[period]))) {
+      this.loadingAnimateService.setValue(true);
       this.selectedPeriod = period;
       switch (period) {
         case 'ALL':
@@ -208,6 +213,7 @@ export class AppComponent implements OnInit {
         this.status = serverStatus.statusMessage;
         this.month = serverStatus.allMonth;
         this.changeDetectorRef.markForCheck();
+        this.loadingAnimateService.setValue(false);
       });
   }
 
@@ -218,6 +224,7 @@ export class AppComponent implements OnInit {
 
   onSelectYear(event: Event, year: string) {
     if (this.selectedYear !== year) {
+      this.loadingAnimateService.setValue(true);
       this.selectedYear = year;
       this.selectedPeriod = 'ALL';
 
@@ -297,15 +304,11 @@ export class AppComponent implements OnInit {
   }
 
   onShowImpactDialog() {
-    if (this.selectedPeriod !== 'ALL') {
-      this.notificationDialog.show('Graphs not (yet) implemented for shorter periods than ALL, please change scope!');
-    } else {
-      this.impactDialog.show();
-    }
+    this.impactDialog.show();
   }
 
   showSearch(forComparison: boolean) {
-    if (this.selectedPeriod !== 'ALL') {
+    if (this.selectedPeriod !== 'ALL' && forComparison) {
       this.notificationDialog.show('Graphs not (yet) implemented for shorter periods than ALL, please change scope!');
     } else {
       this.displaySearch = true;

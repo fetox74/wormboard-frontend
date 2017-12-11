@@ -6,6 +6,7 @@ import {ServerStatus} from '../model/server-status';
 import {ZWBHourlyAggregateCorp} from '../model/zwb-hourly-aggregate-corp';
 import {ZWBAggregateChar} from '../model/zwb-aggregate-char';
 import {ZWBHistoryCorp} from '../model/zwb-history-corp';
+import {ZWBWeekdayAggregateCorp} from '../model/zwb-weekday-aggregate-corp';
 
 @Injectable()
 export class AggregateService {
@@ -22,6 +23,11 @@ export class AggregateService {
   private queryHourlyCorpYear = 'getHourlyCorpStatsForYear?year=';
   private queryHourlyCorpAllTime = 'getHourlyCorpStatsForAllTime?corporationid=';
   private queryHourlyCorpLast90Days = 'getHourlyCorpStatsForLast90Days?corporationid=';
+  private queryWeekdayCorpMonth = 'getWeekdayCorpStatsForMonth?month=';
+  private queryWeekdayCorpQuarter = 'getWeekdayCorpStatsForQuarter?quarter=';
+  private queryWeekdayCorpYear = 'getWeekdayCorpStatsForYear?year=';
+  private queryWeekdayCorpAllTime = 'getWeekdayCorpStatsForAllTime?corporationid=';
+  private queryWeekdayCorpLast90Days = 'getWeekdayCorpStatsForLast90Days?corporationid=';
   private queryActiveCharsMonth = 'getCorpActivePlayerStatsForMonth?month=';
   private queryActiveCharsQuarter = 'getCorpActivePlayerStatsForQuarter?quarter=';
   private queryActiveCharsYear = 'getCorpActivePlayerStatsForYear?year=';
@@ -103,6 +109,36 @@ export class AggregateService {
 
   getHourlyCorpStatsForAllTime(corporationid: number): Observable<ZWBHourlyAggregateCorp> {
     return this.http.get(this.baseURL + this.queryHourlyCorpAllTime + corporationid)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getWeekdayCorpStatsForMonth(corporationid: number, month: string): Observable<ZWBWeekdayAggregateCorp> {
+    return this.http.get(this.baseURL + this.queryWeekdayCorpMonth + month + '&corporationid=' + corporationid)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getWeekdayCorpStatsForQuarter(corporationid: number, quarter: string): Observable<ZWBWeekdayAggregateCorp> {
+    return this.http.get(this.baseURL + this.queryWeekdayCorpQuarter + quarter + '&corporationid=' + corporationid)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getWeekdayCorpStatsForLast90Days(corporationid: number): Observable<ZWBWeekdayAggregateCorp> {
+    return this.http.get(this.baseURL + this.queryWeekdayCorpLast90Days + corporationid)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getWeekdayCorpStatsForYear(corporationid: number, year: string): Observable<ZWBWeekdayAggregateCorp> {
+    return this.http.get(this.baseURL + this.queryWeekdayCorpYear + year + '&corporationid=' + corporationid)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getWeekdayCorpStatsForAllTime(corporationid: number): Observable<ZWBWeekdayAggregateCorp> {
+    return this.http.get(this.baseURL + this.queryWeekdayCorpAllTime + corporationid)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

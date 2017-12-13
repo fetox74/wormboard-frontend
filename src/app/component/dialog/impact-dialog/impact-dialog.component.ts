@@ -33,17 +33,17 @@ export class ImpactDialogComponent implements OnInit {
 
   ngOnInit() {
     this.profiles = [];
-    this.profiles.push({label: 'ISK destroyed', value: {id: 'isk'}});
+    this.profiles.push({label: 'ISK destroyed', value: {id: 'iskwon'}});
     this.profiles.push({label: 'Kills', value: {id: 'kills'}});
-    this.profiles.push({label: 'Active players', value: {id: 'active'}});
+    this.profiles.push({label: 'Active players', value: {id: 'numactive'}});
 
     this.enableIskPipe();
 
-    this.generateChartData();
+    this.generateChartData(this.selectedProfile.id);
   }
 
   public show() {
-    this.generateChartData();
+    this.generateChartData(this.selectedProfile.id);
     this.display = true;
   }
 
@@ -65,16 +65,10 @@ export class ImpactDialogComponent implements OnInit {
   }
 
   public onProfileChange(): void {
-    if (this.selectedProfile.id === 'isk') {
-      this.generateChartData();
-    } else if (this.selectedProfile.id === 'kills') {
-      this.generateChartData();
-    } else if (this.selectedProfile.id === 'active') {
-      this.generateChartData();
-    }
+    this.generateChartData(this.selectedProfile.id);
   }
 
-  private generateChartData(): void {
+  private generateChartData(field: string): void {
     this.data = {
       labels: [],
       datasets: [
@@ -110,10 +104,10 @@ export class ImpactDialogComponent implements OnInit {
     };
 
     if (this.aggregates) {
-      this.aggregates.sort((a, b) => b.iskwon - a.iskwon);
+      this.aggregates.sort((a, b) => b[field] - a[field]);
 
       this.data.labels = this.aggregates.slice(0, 10).map(a => a.corporation);
-      this.data.datasets[0].data = this.aggregates.slice(0, 10).map(a => a.iskwon);
+      this.data.datasets[0].data = this.aggregates.slice(0, 10).map(a => a[field]);
 
       if (!this.data.labels.includes(this.selectedCorp.corporation)) {
         this.data.labels.push(this.selectedCorp.corporation);
@@ -122,7 +116,7 @@ export class ImpactDialogComponent implements OnInit {
 
       this.data.datasets[0].data.push(this.aggregates
         .filter(a => !this.data.labels.includes(a.corporation))
-        .map(a => a.iskwon)
+        .map(a => a[field])
         .reduce((sum, current) => sum + current));
 
       this.data.labels.push('others');

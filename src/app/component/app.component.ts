@@ -272,27 +272,15 @@ export class AppComponent implements OnInit {
   }
 
   onShowTimezoneDialog() {
-    if (this.selectedYear === 'ALL') {
-      this.notificationDialog.show('Function not (yet) implemented for period ALL years, please change scope!');
-    } else {
-      this.timezoneDialog.show();
-    }
+    this.timezoneDialog.show();
   }
 
   onShowActiveCharsDialog() {
-    if (this.selectedYear === 'ALL') {
-      this.notificationDialog.show('Function not (yet) implemented for period ALL years, please change scope!');
-    } else {
-      this.activeCharsDialog.show();
-    }
+    this.activeCharsDialog.show();
   }
 
   onShowDayOfTheWeekDialog() {
-    if (this.selectedYear === 'ALL') {
-      this.notificationDialog.show('Function not (yet) implemented for period ALL years, please change scope!');
-    } else {
-      this.dayOfTheWeekDialog.show();
-    }
+    this.dayOfTheWeekDialog.show();
   }
 
   onShowHistoryDialog() {

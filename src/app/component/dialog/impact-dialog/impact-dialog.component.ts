@@ -29,17 +29,15 @@ export class ImpactDialogComponent implements OnInit {
 
   constructor(private iskPipe: IskPipe,
               private changeDetectorRef: ChangeDetectorRef) {
-  }
-
-  ngOnInit() {
     this.profiles = [];
     this.profiles.push({label: 'ISK destroyed', value: {id: 'iskwon'}});
     this.profiles.push({label: 'Kills', value: {id: 'kills'}});
     this.profiles.push({label: 'Active players', value: {id: 'numactive'}});
+    this.selectedProfile = this.profiles[0].value;
+  }
 
+  ngOnInit() {
     this.enableIskPipe();
-
-    this.generateChartData(this.selectedProfile.id);
   }
 
   public show() {
@@ -64,8 +62,22 @@ export class ImpactDialogComponent implements OnInit {
     };
   }
 
+  private disableIskPipe(): void {
+    this.options = {
+      tooltips: {
+        enabled: true,
+        mode: 'single'
+      }
+    };
+  }
+
   public onProfileChange(): void {
     this.generateChartData(this.selectedProfile.id);
+    if (this.selectedProfile.id === 'iskwon') {
+      this.enableIskPipe();
+    } else {
+      this.disableIskPipe();
+    }
   }
 
   private generateChartData(field: string): void {
@@ -84,8 +96,7 @@ export class ImpactDialogComponent implements OnInit {
             '#ADBFC1',
             '#BBC9CA',
             '#C9D2D3',
-            '#D7DCDC',
-            '#9C1113'
+            '#D7DCDC'
           ],
           hoverBackgroundColor: [
             '#59878C',
@@ -97,8 +108,7 @@ export class ImpactDialogComponent implements OnInit {
             '#ADBFC1',
             '#BBC9CA',
             '#C9D2D3',
-            '#D7DCDC',
-            '#9C1113'
+            '#D7DCDC'
           ]
         }]
     };
@@ -111,7 +121,13 @@ export class ImpactDialogComponent implements OnInit {
 
       if (!this.data.labels.includes(this.selectedCorp.corporation)) {
         this.data.labels.push(this.selectedCorp.corporation);
-        this.data.datasets[0].data.push(this.selectedCorp.iskwon);
+        this.data.datasets[0].data.push(this.selectedCorp[field]);
+        this.data.datasets[0].backgroundColor.push('#9C1113');
+        this.data.datasets[0].hoverBackgroundColor.push('#9C1113');
+      } else {
+        const indexSelectedCorp = this.data.labels.indexOf(this.selectedCorp.corporation);
+        this.data.datasets[0].backgroundColor[indexSelectedCorp] = '#9C1113';
+        this.data.datasets[0].hoverBackgroundColor[indexSelectedCorp] = '#9C1113';
       }
 
       this.data.datasets[0].data.push(this.aggregates

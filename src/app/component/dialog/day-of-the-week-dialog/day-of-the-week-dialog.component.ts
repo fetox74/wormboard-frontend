@@ -31,59 +31,69 @@ export class DayOfTheWeekDialogComponent implements OnInit {
   }
 
   show() {
-    switch (this.selectedPeriod) {
-      case 'ALL':
-        this.aggregateService.getWeekdayCorpStatsForYear(this.selectedCorp.corporationid, this.selectedYear)
-          .first()
-          .subscribe(aggregate => {
-            this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
-            this.display = true;
-            this.changeDetectorRef.markForCheck();
-          });
-        break;
-      case 'Jan':
-      case 'Feb':
-      case 'Mar':
-      case 'Apr':
-      case 'May':
-      case 'Jun':
-      case 'Jul':
-      case 'Aug':
-      case 'Sep':
-      case 'Oct':
-      case 'Nov':
-      case 'Dec':
-        this.aggregateService.getWeekdayCorpStatsForMonth(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
-          .first()
-          .subscribe(aggregate => {
-            this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
-            this.display = true;
-            this.changeDetectorRef.markForCheck();
-          });
-        break;
-      case 'Q1':
-      case 'Q2':
-      case 'Q3':
-      case 'Q4':
-        this.aggregateService.getWeekdayCorpStatsForQuarter(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
-          .first()
-          .subscribe(aggregate => {
-            this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
-            this.display = true;
-            this.changeDetectorRef.markForCheck();
-          });
-        break;
-      case 'Last90':
-        this.aggregateService.getWeekdayCorpStatsForLast90Days(this.selectedCorp.corporationid)
-          .first()
-          .subscribe(aggregate => {
-            this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
-            this.display = true;
-            this.changeDetectorRef.markForCheck();
-          });
-        break;
-      default:
-        break;
+    if (this.selectedYear === 'ALL') {
+      this.aggregateService.getWeekdayCorpStatsForAllTime(this.selectedCorp.corporationid)
+        .first()
+        .subscribe(aggregate => {
+          this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
+          this.display = true;
+          this.changeDetectorRef.markForCheck();
+        });
+    } else {
+      switch (this.selectedPeriod) {
+        case 'ALL':
+          this.aggregateService.getWeekdayCorpStatsForYear(this.selectedCorp.corporationid, this.selectedYear)
+            .first()
+            .subscribe(aggregate => {
+              this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+          break;
+        case 'Jan':
+        case 'Feb':
+        case 'Mar':
+        case 'Apr':
+        case 'May':
+        case 'Jun':
+        case 'Jul':
+        case 'Aug':
+        case 'Sep':
+        case 'Oct':
+        case 'Nov':
+        case 'Dec':
+          this.aggregateService.getWeekdayCorpStatsForMonth(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
+            .first()
+            .subscribe(aggregate => {
+              this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+          break;
+        case 'Q1':
+        case 'Q2':
+        case 'Q3':
+        case 'Q4':
+          this.aggregateService.getWeekdayCorpStatsForQuarter(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
+            .first()
+            .subscribe(aggregate => {
+              this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+          break;
+        case 'Last90':
+          this.aggregateService.getWeekdayCorpStatsForLast90Days(this.selectedCorp.corporationid)
+            .first()
+            .subscribe(aggregate => {
+              this.chartData = this.generateChartData(aggregate.avgkillsperdayactive, aggregate.avgonkills);
+              this.display = true;
+              this.changeDetectorRef.markForCheck();
+            });
+          break;
+        default:
+          break;
+      }
     }
   }
 

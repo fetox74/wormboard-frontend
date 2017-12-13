@@ -17,6 +17,7 @@ export class ImpactDialogComponent implements OnInit {
   public data: any;
 
   public profiles: SelectItem[];
+  public selectedProfile: any;
 
   @Input()
   public aggregates: ZWBAggregateCorp[];
@@ -33,8 +34,8 @@ export class ImpactDialogComponent implements OnInit {
   ngOnInit() {
     this.profiles = [];
     this.profiles.push({label: 'ISK destroyed', value: {id: 'isk'}});
-    this.profiles.push({label: 'kills', value: {id: 'kills'}});
-    this.profiles.push({label: 'active players', value: {id: 'active'}});
+    this.profiles.push({label: 'Kills', value: {id: 'kills'}});
+    this.profiles.push({label: 'Active players', value: {id: 'active'}});
 
     this.enableIskPipe();
 
@@ -61,6 +62,16 @@ export class ImpactDialogComponent implements OnInit {
         }
       }
     };
+  }
+
+  public onProfileChange(): void {
+    if (this.selectedProfile.id === 'isk') {
+      this.generateChartData();
+    } else if (this.selectedProfile.id === 'kills') {
+      this.generateChartData();
+    } else if (this.selectedProfile.id === 'active') {
+      this.generateChartData();
+    }
   }
 
   private generateChartData(): void {

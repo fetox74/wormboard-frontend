@@ -38,7 +38,7 @@ export const monthNum = {
   animations: [
     trigger('menuState', [
       state('invisible', style({
-        transform: 'translateY(calc(-100% + 7px))'
+        transform: 'translateY(-100%) translateY(7px)'
       })),
       state('visible', style({
         transform: 'translateY(0)'

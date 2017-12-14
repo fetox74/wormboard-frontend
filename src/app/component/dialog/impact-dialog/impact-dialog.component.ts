@@ -119,7 +119,7 @@ export class ImpactDialogComponent implements OnInit {
       this.data.labels = this.aggregates.slice(0, 10).map(a => a.corporation);
       this.data.datasets[0].data = this.aggregates.slice(0, 10).map(a => a[field]);
 
-      if (!this.data.labels.includes(this.selectedCorp.corporation)) {
+      if (this.data.labels.indexOf(this.selectedCorp.corporation) < 0) {
         this.data.labels.push(this.selectedCorp.corporation);
         this.data.datasets[0].data.push(this.selectedCorp[field]);
         this.data.datasets[0].backgroundColor.push('#9C1113');
@@ -131,7 +131,7 @@ export class ImpactDialogComponent implements OnInit {
       }
 
       this.data.datasets[0].data.push(this.aggregates
-        .filter(a => !this.data.labels.includes(a.corporation))
+        .filter(a => this.data.labels.indexOf(a.corporation) < 0)
         .map(a => a[field])
         .reduce((sum, current) => sum + current));
 

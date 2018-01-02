@@ -64,14 +64,14 @@ export class HistoryDialogComponent implements OnInit {
       this.aggregateService.getCorpHistoryForAllTime(this.selectedCorp.corporationid)
         .first()
         .subscribe(historyData => {
-          this.historyData = historyData;
+          this.historyData = this.purgeZeroValues(historyData);
           this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
             '# kills', '# losses', '# active players', false);
           if (this.comparisonCorp != null) {
             this.aggregateService.getCorpHistoryForAllTime(this.comparisonCorp.corporationid)
               .first()
               .subscribe(historyDataComparison => {
-                this.historyDataComparison = historyDataComparison;
+                this.historyDataComparison = this.purgeZeroValues(historyDataComparison);
                 this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
                   historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
                 this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
@@ -90,14 +90,14 @@ export class HistoryDialogComponent implements OnInit {
           this.aggregateService.getCorpHistoryForYear(this.selectedCorp.corporationid, this.selectedYear)
             .first()
             .subscribe(historyData => {
-              this.historyData = historyData;
+              this.historyData = this.purgeZeroValues(historyData);
               this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
                 '# kills', '# losses', '# active players', false);
               if (this.comparisonCorp != null) {
                 this.aggregateService.getCorpHistoryForYear(this.comparisonCorp.corporationid, this.selectedYear)
                   .first()
                   .subscribe(historyDataComparison => {
-                    this.historyDataComparison = historyDataComparison;
+                    this.historyDataComparison = this.purgeZeroValues(historyDataComparison);
                     this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
                       historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
                     this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
@@ -126,7 +126,7 @@ export class HistoryDialogComponent implements OnInit {
           this.aggregateService.getCorpHistoryForMonth(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
             .first()
             .subscribe(historyData => {
-              this.historyData = historyData;
+              this.historyData = this.purgeZeroValues(historyData);
               this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
                 '# kills', '# losses', '# active players', false);
               this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
@@ -136,7 +136,7 @@ export class HistoryDialogComponent implements OnInit {
                 this.aggregateService.getCorpHistoryForMonth(this.comparisonCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
                   .first()
                   .subscribe(historyDataComparison => {
-                    this.historyDataComparison = historyDataComparison;
+                    this.historyDataComparison = this.purgeZeroValues(historyDataComparison);
                     this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
                       historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
                     this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
@@ -157,14 +157,14 @@ export class HistoryDialogComponent implements OnInit {
           this.aggregateService.getCorpHistoryForQuarter(this.selectedCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
             .first()
             .subscribe(historyData => {
-              this.historyData = historyData;
+              this.historyData = this.purgeZeroValues(historyData);
               this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
                 '# kills', '# losses', '# active players', false);
               if (this.comparisonCorp != null) {
                 this.aggregateService.getCorpHistoryForQuarter(this.comparisonCorp.corporationid, this.selectedYear + monthNum[this.selectedPeriod])
                   .first()
                   .subscribe(historyDataComparison => {
-                    this.historyDataComparison = historyDataComparison;
+                    this.historyDataComparison = this.purgeZeroValues(historyDataComparison);
                     this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
                       historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
                     this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
@@ -182,14 +182,14 @@ export class HistoryDialogComponent implements OnInit {
           this.aggregateService.getCorpHistoryForLast90Days(this.selectedCorp.corporationid)
             .first()
             .subscribe(historyData => {
-              this.historyData = historyData;
+              this.historyData = this.purgeZeroValues(historyData);
               this.chartData = this.generateHistoryChartData(historyData.kills, historyData.losses, historyData.numactive,
                 '# kills', '# losses', '# active players', false);
               if (this.comparisonCorp != null) {
                 this.aggregateService.getCorpHistoryForLast90Days(this.comparisonCorp.corporationid)
                   .first()
                   .subscribe(historyDataComparison => {
-                    this.historyDataComparison = historyDataComparison;
+                    this.historyDataComparison = this.purgeZeroValues(historyDataComparison);
                     this.chartDataComparison = this.generateHistoryChartData(historyDataComparison.kills, historyDataComparison.losses,
                       historyDataComparison.numactive, '# kills', '# losses', '# active players', false);
                     this.chartDataCombined = this.generateHistoryChartDataCombined(this.historyData.kills, this.historyData.losses, this.historyData.numactive,
@@ -349,5 +349,28 @@ export class HistoryDialogComponent implements OnInit {
         }
       ]
     };
+  }
+
+  purgeZeroValues(data: any): any {
+    for (let i = 0; i < data['kills'].length; i++) {
+      if (data['kills'][i] === 0 && data['losses'][i] === 0) {
+        data['kills'][i] = null;
+        data['losses'][i] = null;
+        data['kdratio'][i] = null;
+        data['kdefficiency'][i] = null;
+        data['iskwon'][i] = null;
+        data['isklost'][i] = null;
+        data['netisk'][i] = null;
+        data['iskefficiency'][i] = null;
+        data['numactive'][i] = null;
+        data['avgperkill'][i] = null;
+        data['iskperactive'][i] = null;
+        data['netiskperactive'][i] = null;
+        data['iskperavgonkill'][i] = null;
+        data['netiskperavgonkill'][i] = null;
+      }
+    }
+
+    return data;
   }
 }

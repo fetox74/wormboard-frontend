@@ -239,12 +239,16 @@ export class HistoryDialogComponent implements OnInit {
                                    additionallabel: string, additionaldash: boolean): any {
     return {
       labels: this.selectedYear === 'ALL' ?
-        ['Jan/Feb \'12', 'Mar/Apr \'12', 'May/Jun \'12', 'Jul/Aug \'12', 'Sep/Oct \'12', 'Nov/Dec \'12',
-         'Jan/Feb \'13', 'Mar/Apr \'13', 'May/Jun \'13', 'Jul/Aug \'13', 'Sep/Oct \'13', 'Nov/Dec \'13',
-         'Jan/Feb \'14', 'Mar/Apr \'14', 'May/Jun \'14', 'Jul/Aug \'14', 'Sep/Oct \'14', 'Nov/Dec \'14',
-         'Jan/Feb \'15', 'Mar/Apr \'15', 'May/Jun \'15', 'Jul/Aug \'15', 'Sep/Oct \'15', 'Nov/Dec \'15',
-         'Jan/Feb \'16', 'Mar/Apr \'16', 'May/Jun \'16', 'Jul/Aug \'16', 'Sep/Oct \'16', 'Nov/Dec \'16',
-         'Jan/Feb \'17', 'Mar/Apr \'17', 'May/Jun \'17', 'Jul/Aug \'17', 'Sep/Oct \'17', 'Nov/Dec \'17'] :
+        ['Q1 \'09', 'Q2 \'09', 'Q3 \'09', 'Q4 \'09',
+         'Q1 \'10', 'Q2 \'10', 'Q3 \'10', 'Q4 \'10',
+         'Q1 \'11', 'Q2 \'11', 'Q3 \'11', 'Q4 \'11',
+         'Q1 \'12', 'Q2 \'12', 'Q3 \'12', 'Q4 \'12',
+         'Q1 \'13', 'Q2 \'13', 'Q3 \'13', 'Q4 \'13',
+         'Q1 \'14', 'Q2 \'14', 'Q3 \'14', 'Q4 \'14',
+         'Q1 \'15', 'Q2 \'15', 'Q3 \'15', 'Q4 \'15',
+         'Q1 \'16', 'Q2 \'16', 'Q3 \'16', 'Q4 \'16',
+         'Q1 \'17', 'Q2 \'17', 'Q3 \'17', 'Q4 \'17',
+         'Q1 \'18', 'Q2 \'18', 'Q3 \'18', 'Q4 \'18'] :
         ['1. Jan', '15. Jan', '1. Feb', '15. Feb', '1. Mar', '15. Mar', '1. Apr', '15. Apr', '1. May', '15. May', '1. Jun', '15. Jun', '1. Jul', '15. Jul',
          '1. Aug', '15. Aug', '1. Sep', '15. Sep', '1. Oct', '15. Oct', '1. Nov', '15. Nov', '1. Dec', '15. Dec'],
       marginLeft: 60,
